@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const root = document.getElementById('root')
+const props = {}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+if (root) {
+  const attrs = Object.keys(root.dataset)
+  attrs.forEach((name, index) => {
+    props[name] = root.dataset[name]
+  })
+
+  props.version = process.env.REACT_APP_VERSION
+  console.log(`somsolet-ui version: ${process.env.REACT_APP_VERSION}`)
+
+  ReactDOM.render(<App {...props} />, document.getElementById('root'))
+}

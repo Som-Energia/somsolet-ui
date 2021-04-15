@@ -1,0 +1,146 @@
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
+
+import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Container from '@material-ui/core/Container'
+import FormControl from '@material-ui/core/FormControl'
+import MenuItem from '@material-ui/core/MenuItem'
+import InputLabel from '@material-ui/core/InputLabel'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Select from '@material-ui/core/Select'
+import Typography from '@material-ui/core/Typography'
+
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'
+import PlaceIcon from '@material-ui/icons/Place'
+
+import pvautosize from 'images/pvautosize.svg'
+
+import { geocodeAddress } from 'services/pvautosize/api'
+
+const AddressSelector = ({ addressList = [], callback }) => {
+  const classes = useStyles()
+  const { t } = useTranslation()
+  const [address, setAddress] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (event) => {
+    console.log()
+    setAddress(event.target.value)
+  }
+
+  const handleClick = async (event) => {
+    setLoading(true)
+    console.log(`select address : ${address}`)
+    const data = await geocodeAddress(address)
+    const geocodedAddress = data?.features?.[0]
+    console.log(geocodedAddress)
+    setLoading(false)
+    callback && callback(geocodedAddress)
+  }
+
+  return (
+    <>
+      <Container maxWidth="sm">
+        <div className={classes.imageWrapper}>
+          <img src={pvautosize} />
+        </div>
+        <Typography component="h3" className={classes.claim}>
+          {t('PV_AUTOSIZE_CLAIM')}
+        </Typography>
+        <FormControl
+          fullWidth
+          variant="outlined"
+          className={classes.formControl}
+        >
+          {!address && (
+            <InputLabel className={classes.label} id="addressLabel">
+              <PlaceIcon color="secondary" /> {t('SELECT_ADDRESS')}
+            </InputLabel>
+          )}
+          <Select
+            id="addressLabel"
+            label={t('ADRESS')}
+            notched={false}
+            className={classes.select}
+            value={address}
+            onChange={handleChange}
+            startAdornment={
+              address && (
+                <InputAdornment position="start">
+                  <PlaceIcon color="secondary" />
+                </InputAdornment>
+              )
+            }
+          >
+            {addressList.map((address, index) => (
+              <MenuItem value={address} key={index}>
+                {address}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          fullWidth
+          color="primary"
+          size="large"
+          disableElevation
+          variant="contained"
+          className={classes.button}
+          endIcon={
+            loading ? (
+              <CircularProgress color="secondary" size={30} />
+            ) : (
+              <NavigateNextIcon />
+            )
+          }
+          onClick={handleClick}
+          disabled={address === '' || loading}
+        >
+          {t('CONTINUE')}
+        </Button>
+      </Container>
+    </>
+  )
+}
+
+export default AddressSelector
+
+const useStyles = makeStyles((theme) => ({
+  imageWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '1rem',
+  },
+  claim: {
+    fontSize: '1.25rem',
+    lineHeight: '1.6rem',
+    color: '#6c8026',
+    fontWeight: 500,
+    textAlign: 'center',
+    marginBottom: '1.25rem',
+  },
+  label: {
+    display: 'flex',
+    alignContent: 'center',
+    '& svg': {
+      marginTop: '-4px',
+      marginRight: '8px',
+    },
+  },
+  select: {
+    backgroundColor: '#fff',
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '2px solid #9abd20 !important',
+    },
+  },
+  button: {
+    marginTop: '2rem',
+    '& .MuiButton-label': {
+      textTransform: 'none',
+      justifyContent: 'space-between',
+      fontSize: '1rem',
+    },
+  },
+}))

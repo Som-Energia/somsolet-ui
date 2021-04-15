@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-function App() {
+import Loading from './components/Loading'
+
+import './i18n/i18n'
+import './App.css'
+
+const App = (props) => {
+  const loadSomSolet = () => {
+    const SomSolet = lazy(() => import('./pages/SomSolet'))
+    return <SomSolet {...props} />
+  }
+
+  const loadPVAutoSize = () => {
+    const PVAutoSize = lazy(() => import('./pages/PVAutoSize'))
+    return <PVAutoSize {...props} />
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Suspense fallback={<Loading />}>
+        <Router>
+          <Switch>
+            <Route exact path="/" render={loadPVAutoSize} />
+
+            <Route path="/somsolet" render={loadSomSolet} />
+            <Route
+              path="/:language/collective-purchases/"
+              render={loadSomSolet}
+            />
+
+            <Route path="/pvautosize" render={loadPVAutoSize} />
+          </Switch>
+        </Router>
+      </Suspense>
+    </>
+  )
 }
 
-export default App;
+export default App
