@@ -19,7 +19,7 @@ import pvautosize from 'images/pvautosize.svg'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
-const AddressSelector = ({ addressList = [], callback }) => {
+const AddressSelector = ({ addressList = [], callbackFn }) => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [address, setAddress] = useState('')
@@ -37,7 +37,7 @@ const AddressSelector = ({ addressList = [], callback }) => {
     const geocodedAddress = data?.features?.[0]
     console.log(geocodedAddress)
     setLoading(false)
-    callback && callback(geocodedAddress)
+    callbackFn && callbackFn(geocodedAddress)
   }
 
   return (

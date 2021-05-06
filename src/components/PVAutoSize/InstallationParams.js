@@ -13,7 +13,8 @@ import TextField from '@material-ui/core/TextField'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import MapIcon from '@material-ui/icons/MapOutlined'
 
-const Params = () => {
+const InstallationParams = (props) => {
+  const { params } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -49,6 +50,7 @@ const Params = () => {
             fullWidth
             variant="outlined"
             className={classes.textfield}
+            value={params.surface}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -56,7 +58,7 @@ const Params = () => {
                 </InputAdornment>
               ),
               endAdornment: (
-                <InputAdornment position="end">&#13217;</InputAdornment>
+                <InputAdornment position="end">m&sup2;</InputAdornment>
               ),
             }}
           >
@@ -130,7 +132,7 @@ const Params = () => {
   )
 }
 
-export default Params
+export default InstallationParams
 
 const useStyles = makeStyles((theme) => ({
   root: {

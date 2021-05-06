@@ -10,5 +10,16 @@
   "SURFACE": "Superfície",
   "INCLINATION": "Inclinació",
   "ORIENTATION": "Orientació",
-  "CALCULATE": "Calcular"
+  "CALCULATE": "Calcular",
+  "YEAR": "any",
+  "YEARS": "anys",
+  "YOUR_ENERGY_ANNUAL_USE": "El teu ús d'energia anual",
+  "ESTIMATED_ANNUAL_GENERATION": "Generació estimada anual",
+  "PRODUCED": "Produïda",
+  "INSTANT_AUTOGENERATION": "Autogeneració instantània",
+  "SURPLUS": "Excendent",
+  "ESTIMATED_ANNUAL_SAVINGS_COSTS": "Estalvi i costos estimats anuals",
+  "SAVING": "Estalvi",
+  "INSTALLATION_COST": "Cost instal·lació (aproximat)",
+  "RETURN_WITH_COMP": "Retorn amb compensació"
 }

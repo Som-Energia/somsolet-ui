@@ -16,16 +16,23 @@ import FlashIcon from '@material-ui/icons/FlashOnOutlined'
 import InputOutlinedIcon from '@material-ui/icons/InputOutlined'
 
 import RoofMap from 'components/PVAutoSize/RoofMap'
-import Params from 'components/PVAutoSize/Params'
+import InstallationParams from 'components/PVAutoSize/InstallationParams'
+import YourEnergy from 'components/PVAutoSize/YourEnergy'
 
-const PVAccordion = ({ addressList = [], coordinates, callback }) => {
+const PVAccordion = (props) => {
+  const { coordinates } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
   const [expanded, setExpanded] = useState('panel1')
+  const [params, setParams] = useState({})
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = (panel) => (isExpanded) => {
     setExpanded(isExpanded ? panel : false)
+  }
+
+  const updateParams = (newParams) => {
+    setParams({ ...params, ...newParams })
   }
 
   const handleClick = () => {}
@@ -40,7 +47,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
           onChange={handleChange('panel1')}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
@@ -50,7 +57,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.detailsNoPadding}>
-            <RoofMap coordinates={coordinates} />
+            <RoofMap coordinates={coordinates} callbackFn={updateParams} />
           </AccordionDetails>
         </Accordion>
 
@@ -61,7 +68,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
           onChange={handleChange('panel2')}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
@@ -71,7 +78,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <Params />
+            <InstallationParams params={params} />
           </AccordionDetails>
         </Accordion>
 
@@ -82,7 +89,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
           onChange={handleChange('panel3')}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
@@ -92,11 +99,7 @@ const PVAccordion = ({ addressList = [], coordinates, callback }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
+            <YourEnergy />
           </AccordionDetails>
         </Accordion>
         <div className={classes.buttonContainer}>
@@ -132,6 +135,9 @@ const useStyles = makeStyles((theme) => ({
     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
     padding: 0,
   },
+  expandIconColor: {
+    color: theme.palette.primary.main,
+  },
   heading: {
     display: 'flex',
     alignItems: 'center',
@@ -160,5 +166,11 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-between',
       fontSize: '1rem',
     },
+  },
+  reportTitle: {
+    textTransform: 'uppercase',
+  },
+  reportLabel: {
+    color: '#cfcfcf',
   },
 }))
