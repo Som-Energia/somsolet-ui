@@ -12,7 +12,7 @@ const PVAutoSize = (props) => {
   const { i18n } = useTranslation()
   const { contracts } = props
 
-  const [address, setAddress] = useState(null)
+  const [address, setAddress] = useState()
 
   const contractsList =
     typeof contracts === 'string' && contracts !== ''
@@ -30,8 +30,8 @@ const PVAutoSize = (props) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className={classes.root}>
-        {address === null ? (
-          <AddressSelector addressList={addressList} callback={setAddress} />
+        {address === undefined ? (
+          <AddressSelector addressList={addressList} callbackFn={setAddress} />
         ) : (
           <PVAccordion coordinates={address?.center} />
         )}
