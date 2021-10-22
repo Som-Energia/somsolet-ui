@@ -10,14 +10,21 @@ export const geocodeAddress = async (address) => {
 }
 
 export const getPVScenario = async (params) => {
-  const { contract, token } = params
+  const { contract, token, installationParams } = params
+  delete installationParams?.scenario
+
   const url = `${HEMAN_API_URL}ScenarioReport/${contract}`
   const headers = {
     Authorization: `token ${token}`,
     'Content-Type': 'application/json',
   }
 
-  return axios({ method: 'GET', url, headers }).then((response) => {
+  return axios({
+    method: 'GET',
+    url,
+    headers,
+    params: installationParams,
+  }).then((response) => {
     return response?.data
   })
 }
