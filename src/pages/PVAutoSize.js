@@ -10,16 +10,14 @@ import PVAccordion from 'components/PVAutoSize/PVAccordion'
 const PVAutoSize = (props) => {
   const classes = useStyles()
   const { i18n } = useTranslation()
-  const { contracts } = props
+  const { contracts, token } = props
 
-  const [address, setAddress] = useState()
+  const [contract, setContract] = useState()
 
   const contractsList =
     typeof contracts === 'string' && contracts !== ''
       ? JSON.parse(contracts)
       : []
-
-  const addressList = contractsList.map((contract) => contract.address)
 
   useEffect(() => {
     const language = props?.match?.params?.language
@@ -30,10 +28,14 @@ const PVAutoSize = (props) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className={classes.root}>
-        {address === undefined ? (
-          <AddressSelector addressList={addressList} callbackFn={setAddress} />
+        {contract?.address === undefined ? (
+          <AddressSelector contracts={contractsList} callbackFn={setContract} />
         ) : (
-          <PVAccordion coordinates={address?.center} />
+          <PVAccordion
+            coordinates={contract?.address?.center}
+            contract={contract?.name}
+            token={token}
+          />
         )}
       </div>
     </ThemeProvider>

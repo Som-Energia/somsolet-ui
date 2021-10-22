@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
@@ -13,32 +13,64 @@ import TextField from '@material-ui/core/TextField'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import MapIcon from '@material-ui/icons/MapOutlined'
 
+import { getPVScenario } from '../../services/pvautosize/api'
+
 const InstallationParams = (props) => {
-  const { params } = props
+  const { params, token, contract, setParams } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const handleClick = () => {}
+  const [power, setPower] = useState()
+  const [tilt, setTilt] = useState()
+  const [haveInstallParams, setHaveInstallParams] = useState()
+
+  const handleChangePower = (value) => {
+    setPower(value.target.value)
+  }
+
+  const handleChangeTilt = (value) => {
+    setTilt(value.target.value)
+  }
+
+  const handleClick = async () => {
+    const installationParams = { ...params, tilt, power }
+    const scenario = await getPVScenario({
+      token,
+      contract,
+      installationParams,
+    })
+    setParams({ scenario })
+  }
+
+  useEffect(() => {
+    const haveValues = params.surface && params.orientation && tilt && power
+    setHaveInstallParams(haveValues)
+  }, [params, tilt, power])
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <InputLabel id="powerLabel" className={classes.label}>
-            {t('POWER')}
+            {t('POWER_PEAK')}
           </InputLabel>
           <Select
             id="powerLabel"
             fullWidth
             variant="outlined"
-            label={t('POWER')}
+            label={t('POWER_PEAK')}
             notched={false}
             className={classes.select}
+            onChange={handleChangePower}
             startAdornment={
-              <InputAdornment position="start">kW</InputAdornment>
+              <InputAdornment position="start">kWp</InputAdornment>
             }
           >
-            <MenuItem value={1.6}>1,6</MenuItem>
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={2.5}>2.5</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
           </Select>
         </Grid>
         <Grid item xs={6}>
@@ -52,6 +84,7 @@ const InstallationParams = (props) => {
             className={classes.textfield}
             value={params.surface}
             InputProps={{
+              readOnly: true,
               startAdornment: (
                 <InputAdornment position="start">
                   <MapIcon color="secondary" />
@@ -66,51 +99,42 @@ const InstallationParams = (props) => {
           </TextField>
         </Grid>
         <Grid item xs={6}>
-          <InputLabel id="inclinationLabel" className={classes.label}>
-            {t('INCLINATION')}
+          <InputLabel id="tiltLabel" className={classes.label}>
+            {t('TILT')}
           </InputLabel>
           <Select
-            id="inclinationLabel"
+            id="tiltLabel"
             fullWidth
             variant="outlined"
-            label={t('INCLINATION')}
+            label={t('TILT')}
             notched={false}
             className={classes.select}
-            startAdornment={
-              <InputAdornment position="start">graus</InputAdornment>
-            }
+            onChange={handleChangeTilt}
           >
-            <MenuItem value={15}>15</MenuItem>
-            <MenuItem value={30}>30</MenuItem>
-            <MenuItem value={45}>45</MenuItem>
+            <MenuItem value={15}>{t('FLAT')} 15º</MenuItem>
+            <MenuItem value={30}>{t('INCLINED')} 30º</MenuItem>
           </Select>
         </Grid>
         <Grid item xs={6}>
           <InputLabel id="orientationLabel" className={classes.label}>
             {t('ORIENTATION')}
           </InputLabel>
-          <Select
+          <TextField
             id="orientationLabel"
             fullWidth
             variant="outlined"
-            label={t('ORIENTATION')}
             notched={false}
             className={classes.select}
-            startAdornment={
-              <InputAdornment position="start">
-                <MapIcon color="secondary" />
-              </InputAdornment>
-            }
-          >
-            <MenuItem value="N">N</MenuItem>
-            <MenuItem value="NE">NE</MenuItem>
-            <MenuItem value="E">E</MenuItem>
-            <MenuItem value="SE">SE</MenuItem>
-            <MenuItem value="S">S</MenuItem>
-            <MenuItem value="SO">SO</MenuItem>
-            <MenuItem value="O">O</MenuItem>
-            <MenuItem value="NO">NO</MenuItem>
-          </Select>
+            InputProps={{
+              readOnly: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <MapIcon color="secondary" />
+                </InputAdornment>
+              ),
+            }}
+            value={params.orientation}
+          />
         </Grid>
       </Grid>
       <div className={classes.buttonContainer}>
@@ -123,7 +147,7 @@ const InstallationParams = (props) => {
           className={classes.button}
           endIcon={<NavigateNextIcon />}
           onClick={handleClick}
-          disabled
+          disabled={!haveInstallParams}
         >
           {t('CALCULATE')}
         </Button>

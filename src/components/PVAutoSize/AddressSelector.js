@@ -19,25 +19,23 @@ import pvautosize from 'images/pvautosize.svg'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
-const AddressSelector = ({ addressList = [], callbackFn }) => {
+const AddressSelector = ({ contracts = [], callbackFn }) => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const [address, setAddress] = useState('')
+  const [contract, setContract] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleChange = (event) => {
-    console.log()
-    setAddress(event.target.value)
+    const contract = contracts.find((item) => item.name === event.target.value)
+    setContract(contract)
   }
 
   const handleClick = async (event) => {
     setLoading(true)
-    console.log(`select address : ${address}`)
-    const data = await geocodeAddress(address)
+    const data = await geocodeAddress(contract?.address)
     const geocodedAddress = data?.features?.[0]
-    console.log(geocodedAddress)
     setLoading(false)
-    callbackFn && callbackFn(geocodedAddress)
+    callbackFn && callbackFn({ ...contract, address: geocodedAddress })
   }
 
   return (
@@ -54,7 +52,7 @@ const AddressSelector = ({ addressList = [], callbackFn }) => {
           variant="outlined"
           className={classes.formControl}
         >
-          {!address && (
+          {!contract?.address && (
             <InputLabel className={classes.label} id="addressLabel">
               <PlaceIcon color="secondary" /> {t('SELECT_ADDRESS')}
             </InputLabel>
@@ -64,19 +62,19 @@ const AddressSelector = ({ addressList = [], callbackFn }) => {
             label={t('ADRESS')}
             notched={false}
             className={classes.select}
-            value={address}
+            value={contract?.address}
             onChange={handleChange}
             startAdornment={
-              address && (
+              contract?.address && (
                 <InputAdornment position="start">
                   <PlaceIcon color="secondary" />
                 </InputAdornment>
               )
             }
           >
-            {addressList.map((address, index) => (
-              <MenuItem value={address} key={index}>
-                {address}
+            {contracts.map((contract, index) => (
+              <MenuItem value={contract.name} key={index}>
+                {contract.address}
               </MenuItem>
             ))}
           </Select>
@@ -96,7 +94,7 @@ const AddressSelector = ({ addressList = [], callbackFn }) => {
             )
           }
           onClick={handleClick}
-          disabled={address === '' || loading}
+          disabled={contract?.address === '' || loading}
         >
           {t('CONTINUE')}
         </Button>
