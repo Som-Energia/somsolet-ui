@@ -5,16 +5,23 @@ import { useTranslation } from 'react-i18next'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
-const YourEnergy = () => {
+const YourEnergy = (props) => {
   const classes = useStyles()
   const { t } = useTranslation()
+  const { scenario } = props
+
+  const niceFloat = (attribute, maximumFractionDigits = 2) => {
+    return new Intl.NumberFormat('ca', {
+      maximumFractionDigits: maximumFractionDigits,
+    }).format(scenario?.[attribute] || '0')
+  }
 
   return (
     <Box mt={1} style={{ flex: 1 }}>
       <Box className={classes.row}>
         {t('YOUR_ENERGY_ANNUAL_USE')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('loadKwhYear')}</span>
           &nbsp;kWh/{t('YEAR')}
         </Box>
       </Box>
@@ -24,21 +31,21 @@ const YourEnergy = () => {
       <Box className={classes.row}>
         {t('PRODUCED')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('productionKwhYear')}</span>
           &nbsp;kWh/{t('YEAR')}
         </Box>
       </Box>
       <Box className={classes.row}>
         {t('INSTANT_AUTOGENERATION')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('productionToLoadKwhYear')}</span>
           &nbsp;kWh/{t('YEAR')}
         </Box>
       </Box>
       <Box className={classes.row}>
         {t('SURPLUS')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('productionToGridKwhYear')}</span>
           &nbsp;kWh/{t('YEAR')}
         </Box>
       </Box>
@@ -49,21 +56,21 @@ const YourEnergy = () => {
       <Box className={classes.row}>
         {t('SAVING')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('savingsEuroYear')}</span>
           &nbsp;€/{t('YEAR')}
         </Box>
       </Box>
       <Box className={classes.row}>
         {t('INSTALLATION_COST')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('installationCostEuro')}</span>
           &nbsp;€
         </Box>
       </Box>
       <Box className={classes.row}>
         {t('RETURN_WITH_COMP')}
         <Box className={classes.reportValue}>
-          <span>{'0'}</span>
+          <span>{niceFloat('paybackYears', 1)}</span>
           &nbsp;{t('YEARS')}
         </Box>
       </Box>

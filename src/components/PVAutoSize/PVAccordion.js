@@ -20,7 +20,7 @@ import InstallationParams from 'components/PVAutoSize/InstallationParams'
 import YourEnergy from 'components/PVAutoSize/YourEnergy'
 
 const PVAccordion = (props) => {
-  const { coordinates } = props
+  const { coordinates, token, contract } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -78,7 +78,12 @@ const PVAccordion = (props) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <InstallationParams params={params} />
+            <InstallationParams
+              params={params}
+              token={token}
+              contract={contract}
+              setParams={updateParams}
+            />
           </AccordionDetails>
         </Accordion>
 
@@ -99,7 +104,7 @@ const PVAccordion = (props) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <YourEnergy />
+            <YourEnergy {...params} />
           </AccordionDetails>
         </Accordion>
         <div className={classes.buttonContainer}>
@@ -145,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       fontSize: theme.typography.pxToRem(18),
     },
-    fontWeight: theme.typography.fontWeightRegular,
+    fontWeight: 300,
     textTransform: 'uppercase',
     '& .MuiSvgIcon-root': {
       marginRight: '16px',

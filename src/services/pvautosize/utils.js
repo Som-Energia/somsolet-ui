@@ -185,3 +185,11 @@ export const mapStyles = [
     },
   },
 ]
+
+export const bearingToCardinal = (bearing) => {
+  const cardinalPoints = ['NE', 'E', 'SE', 'S', 'SO', 'O', 'NO', 'N']
+  let index = bearing - 22.5
+  if (index < 0) index += 360
+  index = parseInt(index / 45)
+  return cardinalPoints[index]
+}
