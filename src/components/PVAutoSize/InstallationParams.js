@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
-import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -10,30 +9,29 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import MapIcon from '@material-ui/icons/MapOutlined'
 
-import { getPVScenario } from '../../services/pvautosize/api'
+// import { getPVScenario } from '../../services/pvautosize/api'
 
 const InstallationParams = (props) => {
-  const { params, token, contract, setParams } = props
+  const { params, setParams } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [power, setPower] = useState()
-  const [tilt, setTilt] = useState()
-  const [haveInstallParams, setHaveInstallParams] = useState()
-
-  const handleChangePower = (value) => {
-    setPower(value.target.value)
-  }
+  const [tilt, setTilt] = useState('')
+  const [twoWaters, setTwoWaters] = useState('')
 
   const handleChangeTilt = (value) => {
     setTilt(value.target.value)
   }
 
+  const handleChangeTwoWaters = (value) => {
+    setTwoWaters(value.target.value)
+  }
+
+  /*
   const handleClick = async () => {
-    const installationParams = { ...params, tilt, power }
+    const installationParams = { ...params, tilt, twoWaters }
     const scenario = await getPVScenario({
       token,
       contract,
@@ -41,38 +39,17 @@ const InstallationParams = (props) => {
     })
     setParams({ scenario })
   }
+  */
 
   useEffect(() => {
-    const haveValues = params.surface && params.orientation && tilt && power
-    setHaveInstallParams(haveValues)
-  }, [params, tilt, power])
+    const installationParams = { ...params, tilt, twoWaters }
+    setParams({ ...installationParams })
+    console.log(installationParams)
+  }, [tilt, twoWaters])
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <InputLabel id="powerLabel" className={classes.label}>
-            {t('POWER_PEAK')}
-          </InputLabel>
-          <Select
-            id="powerLabel"
-            fullWidth
-            variant="outlined"
-            label={t('POWER_PEAK')}
-            notched={false}
-            className={classes.select}
-            onChange={handleChangePower}
-            startAdornment={
-              <InputAdornment position="start">kWp</InputAdornment>
-            }
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={2.5}>2.5</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-          </Select>
-        </Grid>
         <Grid item xs={6}>
           <InputLabel id="surfaceLabel" className={classes.label}>
             {t('SURFACE')}
@@ -80,8 +57,9 @@ const InstallationParams = (props) => {
           <TextField
             id="surfaceLabel"
             fullWidth
+            disabled
             variant="outlined"
-            className={classes.textfield}
+            className={{ ...classes.textfield, ...classes.textfieldDisabled }}
             value={params.surface}
             InputProps={{
               readOnly: true,
@@ -98,6 +76,29 @@ const InstallationParams = (props) => {
             <MenuItem value={1.6}>1,6</MenuItem>
           </TextField>
         </Grid>
+        <Grid item xs={6}>
+          <InputLabel id="orientationLabel" className={classes.label}>
+            {t('ORIENTATION')}
+          </InputLabel>
+          <TextField
+            id="orientationLabel"
+            fullWidth
+            disabled
+            variant="outlined"
+            notched={false}
+            className={{ ...classes.textfield, ...classes.textfieldDisabled }}
+            InputProps={{
+              readOnly: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <MapIcon color="secondary" />
+                </InputAdornment>
+              ),
+            }}
+            value={params.orientation}
+          />
+        </Grid>
+
         <Grid item xs={6}>
           <InputLabel id="tiltLabel" className={classes.label}>
             {t('TILT')}
@@ -116,42 +117,23 @@ const InstallationParams = (props) => {
           </Select>
         </Grid>
         <Grid item xs={6}>
-          <InputLabel id="orientationLabel" className={classes.label}>
-            {t('ORIENTATION')}
+          <InputLabel id="twoWatersLabel" className={classes.label}>
+            {t('TWO_WATERS')}
           </InputLabel>
-          <TextField
-            id="orientationLabel"
+          <Select
+            id="twoWatersLabel"
             fullWidth
             variant="outlined"
+            label={t('TWO_WATERS')}
             notched={false}
             className={classes.select}
-            InputProps={{
-              readOnly: true,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MapIcon color="secondary" />
-                </InputAdornment>
-              ),
-            }}
-            value={params.orientation}
-          />
+            onChange={handleChangeTwoWaters}
+          >
+            <MenuItem value={true}>{t('YES')}</MenuItem>
+            <MenuItem value={false}>{t('NO')}</MenuItem>
+          </Select>
         </Grid>
       </Grid>
-      <div className={classes.buttonContainer}>
-        <Button
-          fullWidth
-          color="primary"
-          size="large"
-          disableElevation
-          variant="contained"
-          className={classes.button}
-          endIcon={<NavigateNextIcon />}
-          onClick={handleClick}
-          disabled={!haveInstallParams}
-        >
-          {t('CALCULATE')}
-        </Button>
-      </div>
     </div>
   )
 }
@@ -179,6 +161,16 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '1rem',
     },
   },
+  twoWatersContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  twoWaters: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: '16px',
+  },
   select: {
     '& .MuiOutlinedInput-notchedOutline': {
       border: '2px solid #9abd20 !important',
@@ -188,5 +180,8 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiOutlinedInput-notchedOutline': {
       border: '2px solid #9abd20 !important',
     },
+  },
+  textfieldDisabled: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
 }))

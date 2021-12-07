@@ -22,27 +22,29 @@ import { geocodeAddress } from 'services/pvautosize/api'
 const AddressSelector = ({ contracts = [], callbackFn }) => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const [contract, setContract] = useState('')
+  const [contract, setContract] = useState({})
   const [loading, setLoading] = useState(false)
 
   const handleChange = (event) => {
     const contract = contracts.find((item) => item.name === event.target.value)
+    console.log(contract)
     setContract(contract)
   }
 
   const handleClick = async (event) => {
+    event.preventDefault()
     setLoading(true)
     const data = await geocodeAddress(contract?.address)
     const geocodedAddress = data?.features?.[0]
-    setLoading(false)
     callbackFn && callbackFn({ ...contract, address: geocodedAddress })
+    setLoading(false)
   }
 
   return (
     <>
       <Container maxWidth="sm">
         <div className={classes.imageWrapper}>
-          <img src={pvautosize} />
+          <img alt="pvcalculator-logo" src={pvautosize} />
         </div>
         <Typography component="h3" className={classes.claim}>
           {t('PV_AUTOSIZE_CLAIM')}
@@ -62,7 +64,6 @@ const AddressSelector = ({ contracts = [], callbackFn }) => {
             label={t('ADRESS')}
             notched={false}
             className={classes.select}
-            value={contract?.address}
             onChange={handleChange}
             startAdornment={
               contract?.address && (
@@ -94,7 +95,7 @@ const AddressSelector = ({ contracts = [], callbackFn }) => {
             )
           }
           onClick={handleClick}
-          disabled={contract?.address === '' || loading}
+          disabled={!contract?.address || loading}
         >
           {t('CONTINUE')}
         </Button>

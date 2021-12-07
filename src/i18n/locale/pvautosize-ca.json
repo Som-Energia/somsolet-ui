@@ -3,6 +3,7 @@
   "SELECT_ADDRESS": "Escull una adreça",
   "CONTINUE": "Continua",
   "ROOF_SURFACE": "Superfície de la teulada",
+  "ROOF_ORIENTATION": "Orientació de la teulada",
   "INSTALLATION_PARAMS": "Paràmetres de la instal·lació",
   "YOUR_ENERGY": "La teva energia",
   "SEE_REPORT": "Veure informe complet",
@@ -27,5 +28,7 @@
   "RETURN_WITH_COMP": "Retorn amb compensació",
   "FLAT": "Plana",
   "INCLINED": "Inclinada",
-  "TWO_WATERS": "Teulada 2 aigües"
+  "TWO_WATERS": "Teulada 2 aigües",
+  "YES": "Sí",
+  "NO": "No"
 }

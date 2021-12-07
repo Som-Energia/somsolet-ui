@@ -28,7 +28,7 @@ const PVAutoSize = (props) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className={classes.root}>
-        {contract?.address === undefined ? (
+        {!contract?.address ? (
           <AddressSelector contracts={contractsList} callbackFn={setContract} />
         ) : (
           <PVAccordion

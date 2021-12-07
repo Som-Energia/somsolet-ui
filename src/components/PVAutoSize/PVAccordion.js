@@ -1,128 +1,151 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
+import Fab from '@material-ui/core/Fab'
+import Zoom from '@material-ui/core/Zoom'
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined'
+import NavigateNextIcon from '@material-ui/icons/ArrowForwardIos'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import MapIcon from '@material-ui/icons/MapOutlined'
 import FlashIcon from '@material-ui/icons/FlashOnOutlined'
 import InputOutlinedIcon from '@material-ui/icons/InputOutlined'
 
 import RoofMap from 'components/PVAutoSize/RoofMap'
+import OrientationMap from 'components/PVAutoSize/OrientationMap'
 import InstallationParams from 'components/PVAutoSize/InstallationParams'
 import YourEnergy from 'components/PVAutoSize/YourEnergy'
+
+import AccordionPanel from './AccordionPanel'
+import { Box } from '@material-ui/core'
 
 const PVAccordion = (props) => {
   const { coordinates, token, contract } = props
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [expanded, setExpanded] = useState('panel1')
+  const [expanded, setExpanded] = useState(1)
   const [params, setParams] = useState({})
+  const [completed, setCompleted] = useState(false)
 
-  const handleChange = (panel) => (isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
+  const handleChange = (panel) => {
+    // const isExpanded = panel === expanded
+    // setExpanded(isExpanded ? false : panel)
   }
+
+  const handleNext = () => {
+    setExpanded(expanded + 1)
+  }
+
+  const handleBack = () => {
+    setExpanded(expanded - 1)
+  }
+
+  useEffect(() => {
+    console.log(params)
+    if (expanded === 1) {
+      const isValid = params?.surface !== undefined
+      setCompleted(isValid)
+    }
+
+    if (expanded === 2) {
+      const isValid = params?.orientation !== undefined
+      setCompleted(isValid)
+    }
+
+    if (expanded === 3) {
+      console.log('is valid?')
+      console.log(params)
+      const isValid = params?.tilt !== '' && params?.twoWaters !== ''
+      setCompleted(isValid)
+    }
+  }, [expanded, params])
 
   const updateParams = (newParams) => {
     setParams({ ...params, ...newParams })
   }
 
-  const handleClick = () => {}
-
   return (
     <>
       <Container maxWidth="sm" className={classes.root}>
-        <Accordion
-          square
-          elevation={0}
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
+        <AccordionPanel
+          panelId="panel1"
+          expandedPanel={`panel${expanded}`}
+          onChange={handleChange}
+          icon={<MapIcon color="primary" />}
+          title={t('ROOF_SURFACE')}
         >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography className={classes.heading}>
-              <MapIcon color="primary" />
-              {t('ROOF_SURFACE')}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails className={classes.detailsNoPadding}>
-            <RoofMap coordinates={coordinates} callbackFn={updateParams} />
-          </AccordionDetails>
-        </Accordion>
+          <RoofMap coordinates={coordinates} callbackFn={updateParams} />
+        </AccordionPanel>
 
-        <Accordion
-          square
-          elevation={0}
-          expanded={expanded === 'panel2'}
-          onChange={handleChange('panel2')}
+        <AccordionPanel
+          panelId="panel2"
+          expandedPanel={`panel${expanded}`}
+          onChange={handleChange}
+          icon={<ExploreOutlinedIcon color="primary" />}
+          title={t('ROOF_ORIENTATION')}
         >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography className={classes.heading}>
-              <InputOutlinedIcon color="primary" />
-              {t('INSTALLATION_PARAMS')}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails className={classes.details}>
+          <OrientationMap
+            coordinates={params?.center || coordinates}
+            zoomLevel={params?.zoomLevel}
+            callbackFn={updateParams}
+          />
+        </AccordionPanel>
+
+        <AccordionPanel
+          panelId="panel3"
+          expandedPanel={`panel${expanded}`}
+          onChange={handleChange}
+          icon={<InputOutlinedIcon color="primary" />}
+          title={t('INSTALLATION_PARAMS')}
+        >
+          <Box px={2} py={1}>
             <InstallationParams
               params={params}
               token={token}
               contract={contract}
               setParams={updateParams}
             />
-          </AccordionDetails>
-        </Accordion>
+          </Box>
+        </AccordionPanel>
 
-        <Accordion
-          square
-          elevation={0}
-          expanded={expanded === 'panel3'}
-          onChange={handleChange('panel3')}
+        <AccordionPanel
+          panelId="panel4"
+          expandedPanel={`panel${expanded}`}
+          onChange={handleChange}
+          icon={<FlashIcon color="primary" />}
+          title={t('YOUR_ENERGY')}
         >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className={classes.expandIconColor} />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography className={classes.heading}>
-              <FlashIcon color="primary" />
-              {t('YOUR_ENERGY')}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails className={classes.details}>
-            <YourEnergy {...params} />
-          </AccordionDetails>
-        </Accordion>
-        <div className={classes.buttonContainer}>
-          <Button
-            fullWidth
-            color="primary"
-            size="large"
-            disableElevation
-            variant="contained"
-            className={classes.button}
-            endIcon={<NavigateNextIcon />}
-            onClick={handleClick}
-            disabled
-          >
-            {t('SEE_REPORT')}
-          </Button>
-        </div>
+          <Box px={3} py={2} style={{ width: '100%' }}>
+            <YourEnergy params={params} token={token} contract={contract} />
+          </Box>
+        </AccordionPanel>
       </Container>
+
+      <Zoom in={expanded > 1} unmountOnExit>
+        <Fab
+          aria-label="previous"
+          className={classes.fabBack}
+          color="primary"
+          onClick={handleBack}
+        >
+          <ArrowBackIosIcon />
+        </Fab>
+      </Zoom>
+
+      <Zoom in={expanded < 4} unmountOnExit>
+        <Fab
+          aria-label="next"
+          className={classes.fab}
+          color="primary"
+          onClick={handleNext}
+          disabled={!completed}
+        >
+          <NavigateNextIcon />
+        </Fab>
+      </Zoom>
     </>
   )
 }
@@ -132,6 +155,7 @@ export default PVAccordion
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 0,
+    position: 'relative',
   },
   details: {
     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
@@ -142,6 +166,20 @@ const useStyles = makeStyles((theme) => ({
   },
   expandIconColor: {
     color: theme.palette.primary.main,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+    backgroundColor: '#fff',
+    color: '#9abd20',
+  },
+  fabBack: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    left: theme.spacing(2),
+    backgroundColor: '#fff',
+    color: '#9abd20',
   },
   heading: {
     display: 'flex',
@@ -161,9 +199,6 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiOutlinedInput-notchedOutline': {
       border: '3px solid #9abd20 !important',
     },
-  },
-  buttonContainer: {
-    padding: '2rem 1rem',
   },
   button: {
     '& .MuiButton-label': {
