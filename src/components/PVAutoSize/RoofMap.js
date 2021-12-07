@@ -1,21 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import Fab from '@material-ui/core/Fab'
-import Button from '@material-ui/core/Button'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import Slider from '@material-ui/core/Slider'
-import Switch from '@material-ui/core/Switch'
 
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -23,7 +16,7 @@ import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import * as turf from '@turf/turf'
 
-import { mapStyles, bearingToCardinal } from 'services/pvautosize/utils'
+import { mapStyles } from 'services/pvautosize/utils'
 
 mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
@@ -34,40 +27,26 @@ const RoofMap = ({ coordinates, callbackFn }) => {
   const { t } = useTranslation()
 
   const mapContainer = useRef()
-  const [edit, setEdit] = useState(false)
+  const [edit] = useState(true)
 
-  const [mode, setMode] = useState('surface')
   const [surfaceDraw, setSurfaceDraw] = useState(false)
   const [surface, setSurface] = useState(0)
-  const [orientation, setOrientation] = useState('0º N')
-  const [rotation, setRotation] = useState(0)
-  const [twoWaters, setTwoWaters] = useState(false)
-
-  const handleEdit = () => {
-    setEdit(true)
-  }
-
-  const handleOrientation = (event) => {
-    setOrientation(event.target.value)
-  }
+  const [deleteDraw, setDeleteDraw] = useState()
+  const [zoomLevel, setZoomLevel] = useState(ZOOM_LEVEL)
+  const [center, setCenter] = useState(coordinates)
 
   const handleDelete = () => {
     setSurfaceDraw(false)
-    setEdit(false)
+    setSurface(0)
+    setDeleteDraw(Math.random())
+    callbackFn({ surface: undefined })
   }
 
-  const handleSave = () => {
-    console.log('save')
-    setEdit(false)
-    callbackFn({ surface, orientation })
-  }
-
-  const getOrientationValue = (value, index) => {
-    const cardinal = bearingToCardinal(value)
-    setRotation(value)
-    setOrientation(`${value}º ${cardinal}`)
-    return value
-  }
+  useEffect(() => {
+    if (surfaceDraw) {
+      callbackFn({ surface, center, zoomLevel })
+    }
+  }, [surface, surfaceDraw])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -83,16 +62,16 @@ const RoofMap = ({ coordinates, callbackFn }) => {
         const area = turf.area(data)
         const roundedArea = Math.round(area)
         setSurface(roundedArea)
+        setZoomLevel(map.getZoom())
+        setCenter(map.getCenter())
       } else {
         if (e.type !== 'draw.delete')
-          console.log('Use the draw tools to draw a polygon!')
+          console.log(t('Use the draw tools to draw a polygon!'))
       }
     }
 
     function saveSurfaceData(e) {
       const data = draw.getAll()
-      console.log('save surface data')
-      console.log(data)
       if (data.features.length > 0) {
         setSurfaceDraw(data)
       }
@@ -161,137 +140,30 @@ const RoofMap = ({ coordinates, callbackFn }) => {
       setSurface(0)
       map.remove()
     }
-  }, [coordinates, edit])
+  }, [coordinates, deleteDraw])
 
   return (
     <div className={classes.root}>
       <div className={classes.mapContainer} ref={mapContainer}></div>
-      {edit && (
-        <>
-          {mode === 'orientation' && (
-            <div className={classes.orientationLayer}>
-              <div className={classes.orientationPanel}>
-                <div className="cardinalRow">
-                  <div className="cardinal">N</div>
-                </div>
-                <div className="cardinalRow">
-                  <div className="cardinal">O</div>
-                  <svg
-                    fill="none"
-                    style={{ webkitTransform: `rotate(${rotation}deg)` }}
-                    stroke="#7da101"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill="rgb(255, 255, 255, 0.7)"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1"
-                      d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"
-                    ></path>
-                  </svg>
-                  <div className="cardinal">E</div>
-                </div>
-                <div className="cardinalRow">
-                  <div className="cardinal">S</div>
-                </div>
-              </div>
-              <div className={classes.orientationParams}>
-                <SomSlider
-                  defaultValue={0}
-                  getAriaValueText={getOrientationValue}
-                  aria-labelledby="orientation-slider"
-                  step={10}
-                  min={0}
-                  max={360}
-                />
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  disabled
-                  className="orientationInputText"
-                  value={orientation}
-                />
-              </div>
-            </div>
-          )}
-          <div className={classes.controlParams}>
-            <div className={classes.surfaceControls}>
-              {mode === 'surface' && (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  disabled
-                  value={surface}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">m&sup2;</InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-              <Button
-                variant="outlined"
-                size="small"
-                className={
-                  mode === 'surface'
-                    ? classes.buttonMapActive
-                    : classes.buttonMapInactive
-                }
-                onClick={() => setMode('surface')}
-              >
-                {t('SURFACE')}
-              </Button>
-            </div>
-            {mode === 'orientation' && (
-              <div className={classes.twoWaters}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={twoWaters}
-                        onChange={() => setTwoWaters(!twoWaters)}
-                        name="twoWaters"
-                        color="primary"
-                      />
-                    }
-                    label={t('TWO_WATERS')}
-                  />
-                </FormGroup>
-              </div>
-            )}
-            <div className={classes.orientationControls}>
-              {mode === 'orientation' && <Button onClick={handleOrientation} />}
-              <Button
-                variant="outlined"
-                size="small"
-                className={
-                  mode === 'orientation'
-                    ? classes.buttonMapActive
-                    : classes.buttonMapInactive
-                }
-                onClick={() => setMode('orientation')}
-              >
-                {t('ORIENTATION')}
-              </Button>
-            </div>
+      {surfaceDraw && (
+        <div className={classes.controlParams}>
+          <div className={classes.surfaceControls}>
+            <TextField
+              variant="outlined"
+              size="small"
+              disabled
+              value={surface}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">m&sup2;</InputAdornment>
+                ),
+              }}
+            />
           </div>
-        </>
+        </div>
       )}
       <div className={classes.controlFabs}>
-        {!edit && (
-          <Fab
-            size="small"
-            color="primary"
-            aria-label="edit"
-            onClick={handleEdit}
-            className={classes.margin}
-          >
-            <EditOutlinedIcon />
-          </Fab>
-        )}
-        {edit && (
+        {surfaceDraw && (
           <>
             <Fab
               size="small"
@@ -302,15 +174,6 @@ const RoofMap = ({ coordinates, callbackFn }) => {
             >
               <DeleteOutlineOutlinedIcon />
             </Fab>
-            <Fab
-              size="small"
-              color="primary"
-              aria-label="save"
-              className={classes.margin}
-              onClick={handleSave}
-            >
-              <SaveOutlinedIcon />
-            </Fab>
           </>
         )}
       </div>
@@ -319,35 +182,6 @@ const RoofMap = ({ coordinates, callbackFn }) => {
 }
 
 export default RoofMap
-
-const SomSlider = withStyles({
-  root: {
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus, &:hover, &$active': {
-      boxShadow: 'inherit',
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)',
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -443,7 +277,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: '8px',
+    bottom: '0px',
 
     display: 'flex',
     alignItems: 'flex-end',
@@ -457,7 +291,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '8px',
         paddingBottom: '8px',
       },
-      backgroundColor: '#fff',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
       maxWidth: '100px',
       marginBottom: '8px',
     },
@@ -466,6 +300,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'rgba(0, 0, 0, 0.87)',
       },
       paddingRight: '8px',
+      marginBottom: 0,
     },
   },
   surfaceControls: {
