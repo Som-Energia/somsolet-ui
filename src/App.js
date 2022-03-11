@@ -17,20 +17,24 @@ const App = (props) => {
     return <PVAutoSize {...props} />
   }
 
+  const loadReport = () => {
+    const Report = lazy(() => import('./pages/Report'))
+    return <Report {...props} />
+  }
+
   return (
     <>
       <Suspense fallback={<Loading />}>
         <Router>
           <Switch>
             <Route exact path="/" render={loadPVAutoSize} />
-
             <Route path="/somsolet" render={loadSomSolet} />
             <Route
               path="/:language/collective-purchases/"
               render={loadSomSolet}
             />
-
             <Route path="/pvautosize" render={loadPVAutoSize} />
+            <Route exact path="/report" render={loadReport} />
           </Switch>
         </Router>
       </Suspense>
