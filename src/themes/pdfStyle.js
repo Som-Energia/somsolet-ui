@@ -78,7 +78,6 @@ const style = {
   },
   peu: {
     gridColumn: '1/4',
-
     backgroundColor: '#b9db42',
     padding: '15px',
   },
@@ -87,9 +86,34 @@ const style = {
     padding: 0,
     listStyle: 'none',
   },
-
   listitem: {
     marginBottom: 8,
+  },
+  table: {
+    borderCollapse: 'collapse',
+  },
+  tableHeading: {
+    backgroundColor: '#3f2c20',
+    color: 'white',
+    padding: 15,
+    border: '1px solid #ccc',
+  },
+  tableCell: {
+    padding: 15,
+    border: '1px solid #ccc',
+  },
+  container: {
+    display: 'flex',
+  },
+  graphicContainer: {
+    width: '100%',
+  },
+  piesContainer: {
+    display: 'flex',
+  },
+  graphicConsumContainer: {
+    gridColumn: '1/4',
+    height: '300px',
   },
 }
 
