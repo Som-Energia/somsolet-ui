@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography'
 
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 
-import { getPVScenario } from '../../services/pvautosize/api'
+import Loading from 'components/Loading'
+import { getPVScenario } from 'services/pvautosize/api'
 
 const YourEnergy = (props) => {
   const classes = useStyles()
@@ -54,7 +55,7 @@ const YourEnergy = (props) => {
   return (
     <>
       {loading ? (
-        <>Loading...</>
+        <Loading />
       ) : (
         <Box mt={1} style={{ flex: 1 }}>
           <Box className={classes.row}>
