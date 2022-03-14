@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
+
 import axios from 'axios'
 import Loading from '../components/Loading'
-import PDF from '../components/Report/PDF'
-import { PDFDownloadLink } from '@react-pdf/renderer'
+import { PDF } from '../components/Report/PDF'
 
 const Report = () => {
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  console.log({ data, isLoading, isError })
+  const componentRef = useRef()
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,11 +41,8 @@ const Report = () => {
     <p>Error</p>
   ) : (
     <>
-      <PDFDownloadLink document={<PDF data={data} />} fileName="somename.pdf">
-        {({ blob, url, loading, error }) =>
-          loading ? 'Loading document...' : 'Download now!'
-        }
-      </PDFDownloadLink>
+      <button onClick={handlePrint}>Print this out!</button>
+      <PDF data={data} ref={componentRef} />
     </>
   )
 }
