@@ -26,6 +26,10 @@ const style = {
   header: {
     gridColumn: '1/4',
     padding: '15px',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    gap: '15px',
   },
   warning: {
     gridColumn: '1/4',
@@ -78,8 +82,16 @@ const style = {
   },
   peu: {
     gridColumn: '1/4',
-    backgroundColor: '#b9db42',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '15px',
+  },
+  peuText: {
     padding: '15px',
+    backgroundColor: '#b9db42',
+    margin: 0,
+    width: '100%',
   },
   list: {
     margin: 0,
