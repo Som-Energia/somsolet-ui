@@ -5,7 +5,7 @@ const style = {
     padding: '20px',
     gridTemplateColumns: 'repeat(3,1fr)',
     gridGap: 10,
-    fontSize: 13,
+    fontSize: 14,
   },
   title: {
     margin: 0,
@@ -78,11 +78,70 @@ const style = {
   properespases: {
     gridColumn: '1/4',
   },
+  properespasesContainer: {
+    border: '1px solid #d9d9d9',
+  },
+  properespasesText: {
+    padding: 10,
+    margin: 0,
+  },
+  primerpas: {
+    backgroundColor: '#3f2c20',
+    color: 'white',
+    fontWeight: 'normal',
+    fontSize: 18,
+    padding: 10,
+    margin: 0,
+  },
+  primerpasBold: {
+    color: '#b9db42',
+    fontWeight: 'bold',
+  },
+  segonpas: {
+    backgroundColor: '#d9d9d9',
+    padding: 10,
+    fontSize: 18,
+    fontWeight: 'normal',
+    margin: 0,
+  },
+
+  segonpasBold: {
+    fontWeight: 'bold',
+  },
   autogeneracio: {
     gridColumn: '1/4',
   },
+  autogeneracioTitle: {
+    backgroundColor: '#d9d9d9',
+    padding: 10,
+    fontSize: 18,
+    fontWeight: 'normal',
+  },
+  autogeneracioBold: {
+    fontWeight: 'bold',
+    color: '#b9db42',
+  },
   calculs: {
     gridColumn: '1/4',
+  },
+  calculsPrimera: {
+    backgroundColor: '#d9d9d9',
+    margin: '0 0 10px 0',
+    padding: 10,
+    height: 120,
+  },
+  calculsSegona: {
+    backgroundColor: '#f9cb9c',
+    margin: 0,
+    padding: 10,
+    height: 130,
+  },
+  calculsTitle: {
+    backgroundColor: '#b3b0b0',
+    padding: 10,
+    fontSize: 18,
+    fontWeight: 'normal',
+    margin: 0,
   },
   peu: {
     gridColumn: '1/4',
@@ -96,6 +155,9 @@ const style = {
     backgroundColor: '#b9db42',
     margin: 0,
     width: '100%',
+  },
+  listContainer: {
+    padding: 16,
   },
   list: {
     margin: 0,
@@ -120,7 +182,9 @@ const style = {
     textAlign: 'center',
   },
   container: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 10,
   },
   graphicContainer: {
     gridColumn: '1/4',
@@ -133,6 +197,7 @@ const style = {
   graphicConsumContainer: {
     gridColumn: '1/4',
     height: '300px',
+    paddingBottom: 60,
   },
 }
 

@@ -4,7 +4,7 @@ const cleanPercentage = (percentage) => {
   return isNegativeOrNaN ? 0 : isTooHigh ? 100 : +percentage
 }
 
-const Circle = ({ color, percentage }) => {
+const Circle = ({ color, percentage, label, description }) => {
   const r = 70
   const circ = 2 * Math.PI * r
   const strokePct = ((100 - percentage) * circ) / 100
@@ -18,7 +18,7 @@ const Circle = ({ color, percentage }) => {
       strokeWidth={'1rem'}
       strokeDasharray={circ}
       strokeDashoffset={percentage ? strokePct : 0}
-    ></circle>
+    />
   )
 }
 
@@ -37,16 +37,22 @@ const Text = ({ percentage }) => {
   )
 }
 
-const PieChart = ({ percentage, color }) => {
+const PieChart = ({ percentage, color, label, description }) => {
   const pct = cleanPercentage(percentage)
   return (
-    <svg width={200} height={200}>
-      <g transform={`rotate(-90 ${'100 100'})`}>
-        <Circle color="lightgrey" />
-        <Circle color={color} percentage={pct} />
-      </g>
-      <Text percentage={pct} />
-    </svg>
+    <div style={{ textAlign: 'center' }}>
+      <h3>{label}</h3>
+      <p style={{ fontSize: 11, fontStyle: 'italic', margin: 0 }}>
+        <small>{description}</small>
+      </p>
+      <svg width={200} height={200}>
+        <g transform={`rotate(-90 ${'100 100'})`}>
+          <Circle color="lightgrey" />
+          <Circle color={color} percentage={pct} />
+        </g>
+        <Text percentage={pct} />
+      </svg>
+    </div>
   )
 }
 
