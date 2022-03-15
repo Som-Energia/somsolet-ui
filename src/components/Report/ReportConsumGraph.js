@@ -70,7 +70,7 @@ const ReportConsumGraph = () => (
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
-      <Legend />
+      <Legend verticalAlign="bottom" align="right" height={36} />
       <Bar dataKey="pv" stackId="a" fill="#b9db42" />
       <Bar dataKey="uv" stackId="a" fill="#beaf17" />
       <Bar dataKey="amt" stackId="a" fill="#d72929" />

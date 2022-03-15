@@ -6,50 +6,69 @@ import {
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
+  Legend,
 } from 'recharts'
 
 const data = [
   {
-    name: 'Enero',
-    uv: 5,
-    pv: 19,
-    amt: 5,
+    name: '0h',
+    autoproduction: 0,
+    electric: 2,
   },
   {
-    name: 'Febrero',
-    uv: 5,
-    pv: 17,
-    amt: 5,
+    name: '2h',
+    autoproduction: 0,
+    electric: 2,
   },
   {
-    name: 'Marzo',
-    uv: 5,
-    pv: 17,
-    amt: 5,
+    name: '4h',
+    autoproduction: 0,
+    electric: 2,
   },
   {
-    name: 'Abril',
-    uv: 6,
-    pv: 17,
-    amt: 8,
+    name: '6h',
+    autoproduction: 0,
+    electric: 5,
   },
   {
-    name: 'Mayo',
-    uv: 7,
-    pv: 24,
-    amt: 9,
+    name: '8h',
+    autoproduction: 2,
+    electric: 6,
   },
   {
-    name: 'Junio',
-    uv: 7,
-    pv: 24,
-    amt: 9,
+    name: '10h',
+    autoproduction: 5,
+    electric: 7,
   },
   {
-    name: 'Julio',
-    uv: 9,
-    pv: 24,
-    amt: 10,
+    name: '12h',
+    autoproduction: 6,
+    electric: 10,
+  },
+  {
+    name: '14h',
+    autoproduction: 5,
+    electric: 8,
+  },
+  {
+    name: '16h',
+    autoproduction: 7,
+    electric: 4,
+  },
+  {
+    name: '18h',
+    autoproduction: 5,
+    electric: 2,
+  },
+  {
+    name: '20h',
+    autoproduction: 4,
+    electric: 0,
+  },
+  {
+    name: '22h',
+    autoproduction: 2,
+    electric: 0,
   },
 ]
 
@@ -67,7 +86,24 @@ const GraphicPerfil = () => (
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
-      <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+
+      <Area
+        type="monotone"
+        dataKey="electric"
+        stroke="#4671ad"
+        strokeWidth={3}
+        fill="#a1bee5"
+      />
+      <Area
+        type="monotone"
+        dataKey="autoproduction"
+        stroke="#ff9700"
+        strokeWidth={3}
+        fill="#ffc100"
+        label={'Autoproduccio'}
+      />
+
+      <Legend verticalAlign="bottom" align="right" height={36} />
     </AreaChart>
   </ResponsiveContainer>
 )

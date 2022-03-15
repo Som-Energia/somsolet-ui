@@ -136,23 +136,41 @@ export class PDF extends React.PureComponent {
               </table>
             </div>
             <div style={styles.piesContainer}>
-              <PieChart percentage={25} color="#b9db42" />
-              <PieChart percentage={39} color="#b9db42" />
+              <PieChart
+                percentage={25}
+                color="#b9db42"
+                label="% Autoconsum directe"
+                description="(Energia anual consumida / energia anual produida)"
+              />
+              <PieChart
+                percentage={39}
+                color="#b9db42"
+                label="% Autosuficiencia"
+                description="(Energia anual autoconsumida / energia anual denergia"
+              />
             </div>
           </div>
         </div>
         <div style={styles.graphicContainer}>
+          <h3>El teu perfil diari denergia</h3>
           <GraphicPerfil />
         </div>
         <div style={styles.graphicConsumContainer}>
+          <h3>Consum per mesos</h3>
           <ReportConsumGraph />
         </div>
         <div style={styles.properespases}>
           <h2 style={styles.heading}>Properes pases</h2>
           <div style={styles.container}>
-            <div>
-              <h3>Apuntat a una compra col·lectiva de Som Energia</h3>
-              <p>
+            <div style={styles.properespasesContainer}>
+              <h3 style={styles.primerpas}>
+                Apuntat a una
+                <strong style={styles.primerpasBold}>
+                  compra col·lectiva
+                </strong>{' '}
+                de Som Energia
+              </h3>
+              <p style={styles.properespasesText}>
                 Accedeix a l
                 <a href="https://www.somenergia.coop/ca/produeix-energia-renovable/autoproduccio/">
                   apartat de compres
@@ -161,18 +179,20 @@ export class PDF extends React.PureComponent {
                 <a href="https://www.somenergia.coop/">Som Energia</a> i mira si
                 hi ha alguna iniciativa oberta a la teva zona.
               </p>
-              <p>
+              <p style={styles.properespasesText}>
                 <a href="https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia">
                   Com funcionen les compres col·lectives de Som Energia?
                 </a>
               </p>
             </div>
-            <div>
-              <h3>
-                Contacta amb una empresa instal·ladora especialitzada i de
-                confiança
+            <div style={styles.properespasesContainer}>
+              <h3 style={styles.segonpas}>
+                Contacta amb una{' '}
+                <strong style={styles.segonpasBold}>
+                  empresa instal·ladora especialitzada i de confiança
+                </strong>
               </h3>
-              <p>
+              <p style={styles.properespasesText}>
                 Com no pot ser duna altra manera, et recomanem contactar
                 empreses cooperatives de leconomia solidària com ara les que
                 trobaràs en aquest{' '}
@@ -181,7 +201,7 @@ export class PDF extends React.PureComponent {
                 </a>
                 .
               </p>
-              <p>
+              <p style={styles.properespasesText}>
                 També pots buscar entre les empreses que han tirat endavant les
                 diferents compres col·lectives de lSom Energia o també altres
                 empreses expertes del sector que pots trobar
@@ -195,17 +215,38 @@ export class PDF extends React.PureComponent {
         </div>
         <div style={styles.autogeneracio}>
           <h2 style={styles.heading}>Informació general sobre autogeneració</h2>
-          <div>
+          <div style={styles.container}>
             <div>
-              Pots trobar informació general sobre què és i com funciona
-              lautoconsum en els següents articles del nostre centre dajuda
+              <h3 style={styles.autogeneracioTitle}>
+                Pots trobar informació general sobre{' '}
+                <strong style={styles.autogeneracioBold}>
+                  què és i com funciona lautoconsum{' '}
+                </strong>
+                en els següents articles del nostre centre dajuda
+              </h3>
             </div>
-            <div>
-              <ul>
-                <li>Què és lautoproducció?</li>
-                <li>Com funciona la compensació simplificada dexcedents?</li>
-                <li>Què passa si marxa la llum i tinc plaques solars?</li>
-                <li>Mes artícles sobre lautogeneració</li>
+            <div style={styles.listContainer}>
+              <ul style={styles.list}>
+                <li style={styles.listitem}>
+                  <a href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio">
+                    Què és lautoproducció?
+                  </a>
+                </li>
+                <li style={styles.listitem}>
+                  <a href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents">
+                    Com funciona la compensació simplificada dexcedents?
+                  </a>
+                </li>
+                <li style={styles.listitem}>
+                  <a href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum">
+                    Què passa si marxa la llum i tinc plaques solars?
+                  </a>
+                </li>
+                <li style={styles.listitem}>
+                  <a href="https://ca.support.somenergia.coop/category/777-autoproduccio">
+                    Mes artícles sobre lautogeneració
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -216,12 +257,14 @@ export class PDF extends React.PureComponent {
           </h2>
         </div>
         <div>
-          <h3>Dades de Generació</h3>
-          <p>
+          <h3 style={styles.calculsTitle}>
+            Dades de <strong>Generació</strong>
+          </h3>
+          <p style={styles.calculsPrimera}>
             Font PVGis Ubicació de referencia Generació estimada segons ubicació
             Afectació de la inclinació Afectació de la orientació
           </p>
-          <p>
+          <p style={styles.calculsSegona}>
             Cal tenir en compte que, tot i estar extretes de fons oficials,
             aquestes son dades estimades teòriques i per tant no sajustaran 100%
             a la realitat. També cal tenir en compte possibles ombres que en
@@ -230,13 +273,15 @@ export class PDF extends React.PureComponent {
           </p>
         </div>
         <div>
-          <h3>Dades de consum</h3>
-          <p>
+          <h3 style={styles.calculsTitle}>
+            Dades de <strong>consum</strong>
+          </h3>
+          <p style={styles.calculsPrimera}>
             Corbes de consum horari del periode dd-mm-aaaa al dd-mm-aaaaa
             extretes dels comptadors gestionats per lempresa de distribució
             elèctrica de la teva zona.
           </p>
-          <p>
+          <p style={styles.calculsSegona}>
             Cal tenir en compte que si es modifiquen aquests usos denergia es
             pot millorar o empitjorar els resultats daquest informe. Lobjectiu
             de tota persona autogeneradora és incrementar al màxim
@@ -245,21 +290,17 @@ export class PDF extends React.PureComponent {
           </p>
         </div>
         <div>
-          <h3>Dades de economiques</h3>
-          <p>
+          <h3 style={styles.calculsTitle}>
+            Dades de <strong>economiques</strong>
+          </h3>
+          <p style={styles.calculsPrimera}>
             <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
               Tarifes
             </a>{' '}
             dús de lenergia de Som Energia actuals: P1: €/kWh P2: €/kWh P3:
             €/kWh Tarifa de compensació dexcedents €/kWh
           </p>
-          <p>
-            Cal tenir en compte que levolució del preu final de lenergia també
-            afecta als resultats de lestudi. Preus més elevats provoquen un
-            aprofitament més rendible de la instal·lació en termes econòmics i
-            preus més baixos signifiquen un aprofitament menys rendible en
-            termes econòmics.
-          </p>
+          <p style={styles.calculsSegona}></p>
         </div>
         <div style={styles.peu}>
           <p style={styles.peuText}>
