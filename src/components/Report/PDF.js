@@ -4,6 +4,9 @@ import GraphicPerfil from './GraphicPerfil'
 import PieChart from './PieChart'
 import ReportConsumGraph from './ReportConsumGraph'
 import logo from '../../images/logo_som_energia.png'
+import bombeta from '../../images/bombeta.png'
+import dona from '../../images/dona.png'
+import placa from '../../images/placa.png'
 import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react/display-name
@@ -69,7 +72,9 @@ export const PDF = React.forwardRef((props, ref) => {
       </div>
       <div style={styles.image}></div>
 
-      <div style={styles.plaques}></div>
+      <div style={styles.plaques}>
+        <img src={placa} width="auto" height="200px" />
+      </div>
       <div style={styles.installacio}>
         <h2 style={styles.title}>{t('INSTALACIO_TITLE')}</h2>
         <ul style={styles.list}>
@@ -158,13 +163,14 @@ export const PDF = React.forwardRef((props, ref) => {
         <div style={styles.container}>
           <div style={styles.properespasesContainer}>
             <h3 style={styles.primerpas}>
+              <img style={styles.primerpasImage} src={dona} />
               {t('PROPERESPASES_DESCRIPTION')}{' '}
               <strong style={styles.primerpasBold}>
                 {t('PROPERESPASES_DESCRIPTION_STRONG')}
               </strong>{' '}
               {t('PROPERESPASES_DESCRIPTION_FINAL')}
             </h3>
-            <p style={styles.properespasesText}>
+            <p style={styles.properespasesAmbImage}>
               <a href="https://www.somenergia.coop/ca/produeix-energia-renovable/autoproduccio/">
                 {t('PROPERESPASES_TEXT')}
               </a>
@@ -238,12 +244,14 @@ export const PDF = React.forwardRef((props, ref) => {
       <div style={styles.calculs}>
         <h2 style={styles.heading}>{t('INFORME_TITLE')} </h2>
       </div>
-      <div>
+      <div style={styles.calculsContainer}>
+        <img src={placa} style={styles.calculsImage} />
         <h3 style={styles.calculsTitle}>{t('GENERACIO_TITLE')} </h3>
         <p style={styles.calculsPrimera}>{t('GENERACIO_DESCRIPTION')} </p>
         <p style={styles.calculsSegona}>{t('GENERACIO_TEXT')} </p>
       </div>
-      <div>
+      <div style={styles.calculsContainer}>
+        <img src={bombeta} style={styles.calculsImage} />
         <h3 style={styles.calculsTitle}>{t('TITLE')} </h3>
         <p style={styles.calculsPrimera}>{t('DESCRIPTION')} </p>
         <p style={styles.calculsSegona}>{t('TEXT')} </p>
