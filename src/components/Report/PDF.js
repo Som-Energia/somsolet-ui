@@ -14,64 +14,56 @@ export const PDF = React.forwardRef((props, ref) => {
     <div style={styles.page} ref={ref}>
       <div style={styles.header}>
         <h1 style={styles.h1}>
-          {t('REPORT_TITTLE')}
-          Informe provisional
+          {t('TITLE_PRIMER')}
           <br />
-          <strong style={styles.strong}>autogeneració</strong> fotovoltaica
+          <strong style={styles.strong}>{t('TITLE_STRONG')}</strong>{' '}
+          {t('TITLE_SEGON')}
         </h1>
         <img src={logo} width="120" />
       </div>
       <div style={styles.warning}>
-        <p style={styles.warningText}>
-          <strong>Atenció</strong>: Aquest informe procura donar una informació
-          orientativa a partir de les dades reals de consum del període
-          dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la
-          instal·lació així com del seu cost Hem procurat que les fonts siguin
-          el màxim fiables i pròximes a la realitat però en cap cas garantim des
-          de Som Energia el seu acompliment en el transcurs dels 25 anys de vida
-          utils estimats.
-        </p>
+        <p style={styles.warningText}>{t('ATENCIO')}</p>
       </div>
       <div style={styles.dades}>
-        <h2 style={styles.title}>Dades principals</h2>
+        <h2 style={styles.title}>{t('DADES_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            Nom: <strong>Oscar</strong>
+            {t('DADES_NOM')}: <strong>Oscar</strong>
           </li>
           <li style={styles.listitem}>
-            Direcció:{' '}
+            {t('DADES_DIRECCIO')}:{' '}
             <strong>Av Principe de Asturias 6 Ciñera 24660 Leon</strong>
           </li>
           <li style={styles.listitem}>
-            Num. Contracte: <strong>123456</strong>
+            {t('DADES_CONTRACTE')}: <strong>123456</strong>
           </li>
         </ul>
       </div>
       <div style={styles.coberta}>
-        <h2 style={styles.title}>Dades coberta</h2>
+        <h2 style={styles.title}> {t('COBERTA_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            Orientació: <strong>Sud</strong>
+            {t('COBERTA_ORIENTACIO')}: <strong>Sud</strong>
           </li>
           <li style={styles.listitem}>
-            Inclinació: <strong>10</strong>
+            {t('COBERTA_INCLINACIO')}: <strong>10</strong>
           </li>
           <li style={styles.listitem}>
-            Superficie útil: <strong>35</strong>
+            {t('COBERTA_SUPERFICIE')}: <strong>35</strong>
           </li>
         </ul>
       </div>
       <div style={styles.us}>
-        <h2 style={styles.title}>Ús de lenergia</h2>
+        <h2 style={styles.title}> {t('US_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            Potència contractada: <strong>P1 - P3</strong>
+            {t('US_POTENCIA')}: <strong>P1 - P3</strong>
           </li>
           <li style={styles.listitem}>
-            Tarifa: <strong>P3</strong>
+            {t('US_TARIFA')}: <strong>P3</strong>
           </li>
           <li style={styles.listitem}>
-            Ús anual de lenergia: <strong>P3</strong>
+            {t('US_ANUAL')}: <strong>P3</strong>
           </li>
         </ul>
       </div>
@@ -79,60 +71,60 @@ export const PDF = React.forwardRef((props, ref) => {
 
       <div style={styles.plaques}></div>
       <div style={styles.installacio}>
-        <h2 style={styles.title}>Característiques instal·lació proposada</h2>
+        <h2 style={styles.title}>{t('INSTALACIO_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            Nombre de panells: <strong>9</strong>
+            {t('INSTALACIO_NOMBRE')}: <strong>9</strong>
           </li>
           <li style={styles.listitem}>
-            Potència panells: <strong>100</strong>
+            {t('INSTALACIO_POTENCIA')}: <strong>100</strong>
           </li>
           <li style={styles.listitem}>
-            Potència total: <strong>900</strong>
+            {t('INSTALACIO_TOTAL')}: <strong>900</strong>
           </li>
           <li style={styles.listitem}>
-            Generació anual: <strong>10800</strong>
+            {t('INSTALACIO_ANUAL')}: <strong>10800</strong>
           </li>
           <li style={styles.listitem}>
-            Cost aproximat: <strong>7000</strong>
+            {t('INSTALACIO_COST')}: <strong>7000</strong>
           </li>
         </ul>
       </div>
       <div style={styles.estudi}>
-        <h2 style={styles.heading}>Estudi energètic - econòmic</h2>
+        <h2 style={styles.heading}>{t('ESTUDI_TITLE')}</h2>
         <div style={styles.container}>
           <div>
             <table style={styles.table}>
               <tr>
-                <td style={styles.tableHeading}>Autogeneració directa anual</td>
-                <td style={styles.tableCell}>5800 kWh/anyº</td>
-                <td style={styles.tableCell}>6000 €/any</td>
+                <td style={styles.tableHeading}>{t('ESTUDI_AUTOGENERACIO')}</td>
+                <td style={styles.tableCell}>5800 kWh/{t('ANY')}º</td>
+                <td style={styles.tableCell}>6000 €/{t('ANY')}</td>
               </tr>
               <tr>
-                <td style={styles.tableHeading}>Excedent</td>
-                <td style={styles.tableCell}>100 kWh/any</td>
-                <td style={styles.tableCell}>500 €/any</td>
+                <td style={styles.tableHeading}>{t('ESTUDI_EXCEDENT')}</td>
+                <td style={styles.tableCell}>100 kWh/{t('ANY')}</td>
+                <td style={styles.tableCell}>500 €/{t('ANY')}</td>
               </tr>
               <tr>
-                <td style={styles.tableHeading}>Energia de xarxa</td>
+                <td style={styles.tableHeading}>{t('ESTUDI_XARXA')}</td>
                 <td colSpan="2" style={styles.tableCell}>
-                  800 kWh/any
+                  800 kWh/{t('ANY')}
                 </td>
               </tr>
               <tr>
                 <td style={styles.tableHeading}>
-                  <strong>Estalvi total anual</strong>
+                  <strong>{t('ESTUDI_ESTALVI')}</strong>
                 </td>
                 <td colSpan="2" style={styles.tableCell}>
-                  9000 €/any
+                  9000 €/{t('ANY')}
                 </td>
               </tr>
               <tr>
                 <td style={styles.tableHeading}>
-                  <strong>Retorn inversió</strong>
+                  <strong>{t('ESTUDI_RETORN')}</strong>
                 </td>
                 <td colSpan="2" style={styles.tableCell}>
-                  5 anys
+                  5 {t('ANYS')}
                 </td>
               </tr>
             </table>
@@ -141,74 +133,64 @@ export const PDF = React.forwardRef((props, ref) => {
             <PieChart
               percentage={25}
               color="#b9db42"
-              label="% Autoconsum directe"
-              description="(Energia anual consumida / energia anual produida)"
+              label={t('PIE_AUTOCONSUM_TITLE')}
+              description={t('PIE_AUTOCONSUM_DESCRIPTION')}
             />
             <PieChart
               percentage={39}
               color="#b9db42"
-              label="% Autosuficiencia"
-              description="(Energia anual autoconsumida / energia anual denergia"
+              label={t('PIE_AUTOSUFICIENCIA_TITLE')}
+              description={t('PIE_AUTOSUFICIENCIA_DESCRIPTION')}
             />
           </div>
         </div>
       </div>
       <div style={styles.graphicContainer}>
-        <h3>El teu perfil diari denergia</h3>
+        <h3>{t('PERFIL_TITLE')}</h3>
         <GraphicPerfil />
       </div>
       <div style={styles.graphicConsumContainer}>
-        <h3>Consum per mesos</h3>
+        <h3>{t('PIE_AUTOSUFICIENCIA_TITLE')}</h3>
         <ReportConsumGraph />
       </div>
       <div style={styles.properespases}>
-        <h2 style={styles.heading}>Properes pases</h2>
+        <h2 style={styles.heading}>{t('PROPERESPASES_TITLE')}</h2>
         <div style={styles.container}>
           <div style={styles.properespasesContainer}>
             <h3 style={styles.primerpas}>
-              Apuntat a una
+              {t('PROPERESPASES_DESCRIPTION')}{' '}
               <strong style={styles.primerpasBold}>
-                compra col·lectiva
+                {t('PROPERESPASES_DESCRIPTION_STRONG')}
               </strong>{' '}
-              de Som Energia
+              {t('PROPERESPASES_DESCRIPTION_FINAL')}
             </h3>
             <p style={styles.properespasesText}>
-              Accedeix a l
               <a href="https://www.somenergia.coop/ca/produeix-energia-renovable/autoproduccio/">
-                apartat de compres
+                {t('PROPERESPASES_TEXT')}
               </a>
-              col·lectives de la web de
-              <a href="https://www.somenergia.coop/">Som Energia</a> i mira si
-              hi ha alguna iniciativa oberta a la teva zona.
             </p>
             <p style={styles.properespasesText}>
               <a href="https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia">
-                Com funcionen les compres col·lectives de Som Energia?
+                {t('PROPERESPASES_LINK')}{' '}
               </a>
             </p>
           </div>
           <div style={styles.properespasesContainer}>
             <h3 style={styles.segonpas}>
-              Contacta amb una{' '}
+              {t('PROPERESPASES_TITLE_SEGON')}{' '}
               <strong style={styles.segonpasBold}>
-                empresa instal·ladora especialitzada i de confiança
+                {t('PROPERESPASES_TITLE_SEGON_STRONG')}{' '}
               </strong>
             </h3>
             <p style={styles.properespasesText}>
-              Com no pot ser duna altra manera, et recomanem contactar empreses
-              cooperatives de leconomia solidària com ara les que trobaràs en
-              aquest{' '}
               <a href="https://docs.google.com/document/d/1b2J3-gZeJlrv6DkWiYRhpqvflW_ACQZcsOL3if8IyF0/edit">
-                enllaç
+                {t('PROPERESPASES_TEXT_SEGON')}{' '}
               </a>
               .
             </p>
             <p style={styles.properespasesText}>
-              També pots buscar entre les empreses que han tirat endavant les
-              diferents compres col·lectives de lSom Energia o també altres
-              empreses expertes del sector que pots trobar
               <a href="https://www.idae.es/companies/energetic-services">
-                aquí
+                {t('PROPERESPASES_TEXT_TERCER')}{' '}
               </a>
               .
             </p>
@@ -216,37 +198,37 @@ export const PDF = React.forwardRef((props, ref) => {
         </div>
       </div>
       <div style={styles.autogeneracio}>
-        <h2 style={styles.heading}>Informació general sobre autogeneració</h2>
+        <h2 style={styles.heading}>{t('AUTOGENERACIO_TITLE')} </h2>
         <div style={styles.container}>
           <div>
             <h3 style={styles.autogeneracioTitle}>
-              Pots trobar informació general sobre{' '}
+              {t('AUTOGENERACIO_TEXT')}{' '}
               <strong style={styles.autogeneracioBold}>
-                què és i com funciona lautoconsum{' '}
+                {t('AUTOGENERACIO_TEXT_STRONG')}{' '}
               </strong>
-              en els següents articles del nostre centre dajuda
+              {t('AUTOGENERACIO_TEXT_FINAL')}{' '}
             </h3>
           </div>
           <div style={styles.listContainer}>
             <ul style={styles.list}>
               <li style={styles.listitem}>
                 <a href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio">
-                  Què és lautoproducció?
+                  {t('AUTOGENERACIO_LINK_PRIMER')}{' '}
                 </a>
               </li>
               <li style={styles.listitem}>
                 <a href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents">
-                  Com funciona la compensació simplificada dexcedents?
+                  {t('AUTOGENERACIO_LINK_SEGON')}{' '}
                 </a>
               </li>
               <li style={styles.listitem}>
                 <a href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum">
-                  Què passa si marxa la llum i tinc plaques solars?
+                  {t('AUTOGENERACIO_LINK_TERCER')}{' '}
                 </a>
               </li>
               <li style={styles.listitem}>
                 <a href="https://ca.support.somenergia.coop/category/777-autoproduccio">
-                  Mes artícles sobre lautogeneració
+                  {t('AUTOGENERACIO_LINK_CUART')}{' '}
                 </a>
               </li>
             </ul>
@@ -254,59 +236,29 @@ export const PDF = React.forwardRef((props, ref) => {
         </div>
       </div>
       <div style={styles.calculs}>
-        <h2 style={styles.heading}>
-          Com shan generat els càlculs daquest informe?
-        </h2>
+        <h2 style={styles.heading}>{t('INFORME_TITLE')} </h2>
       </div>
       <div>
-        <h3 style={styles.calculsTitle}>
-          Dades de <strong>Generació</strong>
-        </h3>
-        <p style={styles.calculsPrimera}>
-          Font PVGis Ubicació de referencia Generació estimada segons ubicació
-          Afectació de la inclinació Afectació de la orientació
-        </p>
-        <p style={styles.calculsSegona}>
-          Cal tenir en compte que, tot i estar extretes de fons oficials,
-          aquestes son dades estimades teòriques i per tant no sajustaran 100% a
-          la realitat. També cal tenir en compte possibles ombres que en aquest
-          estudi no shan tingut en compte i poden afectar de forma molt
-          important els resultats.
-        </p>
+        <h3 style={styles.calculsTitle}>{t('GENERACIO_TITLE')} </h3>
+        <p style={styles.calculsPrimera}>{t('GENERACIO_DESCRIPTION')} </p>
+        <p style={styles.calculsSegona}>{t('GENERACIO_TEXT')} </p>
       </div>
       <div>
-        <h3 style={styles.calculsTitle}>
-          Dades de <strong>consum</strong>
-        </h3>
-        <p style={styles.calculsPrimera}>
-          Corbes de consum horari del periode dd-mm-aaaa al dd-mm-aaaaa extretes
-          dels comptadors gestionats per lempresa de distribució elèctrica de la
-          teva zona.
-        </p>
-        <p style={styles.calculsSegona}>
-          Cal tenir en compte que si es modifiquen aquests usos denergia es pot
-          millorar o empitjorar els resultats daquest informe. Lobjectiu de tota
-          persona autogeneradora és incrementar al màxim lautogeneració directa,
-          es a dir, utilitzar lenergia en hores solars.
-        </p>
+        <h3 style={styles.calculsTitle}>{t('TITLE')} </h3>
+        <p style={styles.calculsPrimera}>{t('DESCRIPTION')} </p>
+        <p style={styles.calculsSegona}>{t('TEXT')} </p>
       </div>
       <div>
-        <h3 style={styles.calculsTitle}>
-          Dades de <strong>economiques</strong>
-        </h3>
+        <h3 style={styles.calculsTitle}>{t('ECONOMIQUES_TITLE')} </h3>
         <p style={styles.calculsPrimera}>
           <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
-            Tarifes
+            {t('ECONOMIQUES_DESCRIPTION')}{' '}
           </a>{' '}
-          dús de lenergia de Som Energia actuals: P1: €/kWh P2: €/kWh P3: €/kWh
-          Tarifa de compensació dexcedents €/kWh
         </p>
         <p style={styles.calculsSegona}></p>
       </div>
       <div style={styles.peu}>
-        <p style={styles.peuText}>
-          Per a qualsevol dubte pots escriure a auto@somenergia.coop
-        </p>
+        <p style={styles.peuText}>{t('PEU')} </p>
         <img src={logo} width="120" />
       </div>
     </div>

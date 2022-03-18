@@ -2,15 +2,15 @@
   "TITLE_PRIMER": "INFORME PROVISIONAL",
   "TITLE_STRONG": "AUTOGENERACIÓ",
   "TITLE_SEGON": "FOTOVOLTAICA",
-  "ATENCIO": "<strong>Atenció</strong>: Aquest informe procura donar una informació orientativa a partir de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la instal·lació així com del seu cost Hem procurat que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de vida utils estimats.",
+  "ATENCIO": "Atenció: Aquest informe procura donar una informació orientativa a partir de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la instal·lació així com del seu cost Hem procurat que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de vida utils estimats.",
   "DADES_TITLE": "Dades principals  ",
   "DADES_NOM": "Nom",
   "DADES_DIRECCIO": "Direcció",
   "DADES_CONTRACTE": "Num. Contracte",
   "COBERTA_TITLE": "Dades coberta",
   "COBERTA_ORIENTACIO": "Orientació",
-  "COBERTA_INCLINACIÓ": "Inclinació",
-  "COBERTA_SUPERFICIE": "Superficie",
+  "COBERTA_INCLINACIO": "Inclinació",
+  "COBERTA_SUPERFICIE": "Superficie util",
   "US_TITLE": "Ús del l'energia",
   "US_POTENCIA": "Potencia contractada",
   "US_TARIFA": "Tarifa",
@@ -61,5 +61,7 @@
   "TEXT": "Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en hores solars.",
   "ECONOMIQUES_TITLE": "Dades de economiques",
   "ECONOMIQUES_DESCRIPTION": "Tarifes dús de lenergia de Som Energia actuals: P1: €/kWh P2: €/kWh P3: €/kWh Tarifa de compensació dexcedents €/kWh",
-  "PEU": "Per a qualsevol dubte pots escriure a auto@somenergia.coop"
+  "PEU": "Per a qualsevol dubte pots escriure a auto@somenergia.coop",
+  "ANY": "any",
+  "ANYS": "anys"
 }
