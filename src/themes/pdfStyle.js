@@ -65,6 +65,7 @@ const style = {
     gridColumn: '1/2',
     backgroundColor: '#ccc',
     padding: 10,
+    textAlign: 'center',
   },
   installacio: {
     gridColumn: '2/4',
@@ -84,6 +85,10 @@ const style = {
     padding: 10,
     margin: 0,
   },
+  properespasesAmbImage: {
+    padding: '10px 90px 10px 10px',
+    margin: 0,
+  },
   primerpas: {
     backgroundColor: '#3f2c20',
     color: 'white',
@@ -91,6 +96,13 @@ const style = {
     fontSize: 18,
     padding: 10,
     margin: 0,
+    position: 'relative',
+  },
+  primerpasImage: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    height: 190,
   },
   primerpasBold: {
     color: '#b9db42',
@@ -122,6 +134,14 @@ const style = {
   },
   calculs: {
     gridColumn: '1/4',
+  },
+  calculsContainer: {
+    position: 'relative',
+  },
+  calculsImage: {
+    position: 'absolute',
+    right: 0,
+    height: 50,
   },
   calculsPrimera: {
     backgroundColor: '#d9d9d9',
