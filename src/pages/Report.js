@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
-
-import axios from 'axios'
 import Loading from '../components/Loading'
 import { PDF } from '../components/Report/PDF'
+import { getReport } from '../services/somsolet/api'
 
 const Report = () => {
   const [data, setData] = useState(null)
@@ -16,23 +15,17 @@ const Report = () => {
   })
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsError(false)
-      setIsLoading(true)
-      try {
-        const result = await axios(
-          `https://run.mocky.io/v3/0dc09e7a-da78-484f-99e3-63137f0400ad`
-        )
-
-        setData(result.data)
-      } catch (error) {
-        setIsError(true)
-      }
-
-      setIsLoading(false)
-    }
-
-    fetchData()
+    setIsLoading(true)
+    getReport()
+      .then((report) => {
+        setData(report)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.log(error)
+        setIsError(error)
+        setIsLoading(false)
+      })
   }, [])
 
   return isLoading ? (

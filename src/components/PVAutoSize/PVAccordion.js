@@ -64,6 +64,7 @@ const PVAccordion = (props) => {
   }, [expanded, params])
 
   const updateParams = (newParams) => {
+    console.log({ params })
     setParams({ ...params, ...newParams })
   }
 
