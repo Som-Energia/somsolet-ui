@@ -8,8 +8,7 @@ const style = {
     fontSize: 14,
   },
   title: {
-    margin: 0,
-    marginBottom: 8,
+    margin: '8px 0',
   },
   heading: {
     backgroundColor: '#beaf17',
@@ -169,6 +168,7 @@ const style = {
   },
   table: {
     borderCollapse: 'collapse',
+    height: 300,
   },
   tableHeading: {
     backgroundColor: '#3f2c20',
@@ -190,14 +190,15 @@ const style = {
     gridColumn: '1/4',
     width: '100%',
     height: 300,
+    paddingBottom: 90,
   },
   piesContainer: {
     display: 'flex',
   },
   graphicConsumContainer: {
     gridColumn: '1/4',
-    height: '300px',
-    paddingBottom: 60,
+    height: 300,
+    paddingBottom: 50,
   },
 }
 
