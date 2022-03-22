@@ -5,7 +5,6 @@ const { HEMAN_API_URL } = window.config
 export const geocodeAddress = async (address) => {
   const encodedAddress = encodeURI(address)
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?types=address&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-  console.log({ url })
   return await fetch(url).then((data) => data.json())
 }
 

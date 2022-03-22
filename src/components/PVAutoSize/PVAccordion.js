@@ -44,7 +44,6 @@ const PVAccordion = (props) => {
   }
 
   useEffect(() => {
-    console.log(params)
     if (expanded === 1) {
       const isValid = params?.surface !== undefined
       setCompleted(isValid)
@@ -56,15 +55,12 @@ const PVAccordion = (props) => {
     }
 
     if (expanded === 3) {
-      console.log('is valid?')
-      console.log(params)
       const isValid = params?.tilt !== '' && params?.twoWaters !== ''
       setCompleted(isValid)
     }
   }, [expanded, params])
 
   const updateParams = (newParams) => {
-    console.log({ params })
     setParams({ ...params, ...newParams })
   }
 
