@@ -26,7 +26,6 @@ export const getStages = async (data) => {
       Authorization: `Basic ${token}`,
     },
   }).then((response) => {
-    console.log(response)
     return response?.data
   })
 }
@@ -39,7 +38,6 @@ export const getCampaign = async (data) => {
       Authorization: `Basic ${token}`,
     },
   }).then((response) => {
-    console.log(response)
     return response?.data
   })
 }
@@ -53,7 +51,6 @@ export const getProject = async (data) => {
       dni: data.dni,
     },
   }).then((response) => {
-    console.log(response)
     return response?.data
   })
 }
@@ -66,7 +63,6 @@ export const sendContact = async (data) => {
       Authorization: `Basic ${token}`,
     },
   }).then((response) => {
-    console.log(response)
     return response
   })
 }
@@ -79,7 +75,6 @@ export const sendIncidence = async (data) => {
       Authorization: `Basic ${token}`,
     },
   }).then((response) => {
-    console.log(response)
     return response
   })
 }

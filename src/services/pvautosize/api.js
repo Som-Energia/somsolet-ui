@@ -5,14 +5,13 @@ const { HEMAN_API_URL } = window.config
 export const geocodeAddress = async (address) => {
   const encodedAddress = encodeURI(address)
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?types=address&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-  console.log(url)
+  console.log({ url })
   return await fetch(url).then((data) => data.json())
 }
 
 export const getPVScenario = async (params) => {
   const { contract, token, installationParams } = params
   delete installationParams?.scenario
-
   const url = `${HEMAN_API_URL}ScenarioReport/${contract}`
   const headers = {
     Authorization: `token ${token}`,
