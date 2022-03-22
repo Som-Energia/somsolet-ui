@@ -44,7 +44,6 @@ const InstallationParams = (props) => {
   useEffect(() => {
     const installationParams = { ...params, tilt, twoWaters }
     setParams({ ...installationParams })
-    console.log(installationParams)
   }, [tilt, twoWaters])
 
   return (

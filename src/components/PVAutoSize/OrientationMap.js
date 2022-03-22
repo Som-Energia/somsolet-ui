@@ -20,7 +20,6 @@ const ZOOM_LEVEL = 18
 const OrientationMap = (props) => {
   const classes = useStyles()
   // const { t } = useTranslation()
-  console.log(props)
   const { coordinates, zoomLevel, callbackFn } = props
 
   const mapContainer = useRef()

@@ -27,7 +27,6 @@ const AddressSelector = ({ contracts = [], callbackFn }) => {
 
   const handleChange = (event) => {
     const contract = contracts.find((item) => item.name === event.target.value)
-    console.log(contract)
     setContract(contract)
   }
 

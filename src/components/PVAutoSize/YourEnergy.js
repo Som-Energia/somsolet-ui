@@ -20,7 +20,7 @@ const YourEnergy = (props) => {
 
   const [loading, setLoading] = useState(false)
   const [scenario, setScenario] = useState()
-  const [power, setPower] = useState('')
+  const [power, setPower] = useState(10.64)
 
   const niceFloat = (attribute, maximumFractionDigits = 2) => {
     return new Intl.NumberFormat('ca', {
@@ -32,9 +32,7 @@ const YourEnergy = (props) => {
     setPower(event.target.value)
   }
 
-  const handleClick = () => {
-    console.log('click!')
-  }
+  const handleClick = () => {}
 
   useEffect(() => {
     const requestScenario = async () => {
