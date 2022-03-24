@@ -13,6 +13,8 @@
   "ELECTRIC_CAR": "cotxe elèc.",
   "SURFACE": "Superfície",
   "TILT": "Inclinació",
+  "POTENCIA": "Potència pic (kWp)",
+  "POTENCIA_OPTIMA": "òptima",
   "ORIENTATION": "Orientació",
   "CALCULATE": "Calcular",
   "YEAR": "any",

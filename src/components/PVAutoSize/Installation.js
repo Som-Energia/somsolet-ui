@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
@@ -11,40 +11,11 @@ import TextField from '@material-ui/core/TextField'
 
 import MapIcon from '@material-ui/icons/MapOutlined'
 
-// import { getPVScenario } from '../../services/pvautosize/api'
-
-const InstallationParams = (props) => {
-  const { params, setParams } = props
+const Installation = ({ params, updateParams }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [tilt, setTilt] = useState('')
-  const [twoWaters, setTwoWaters] = useState('')
-
-  const handleChangeTilt = (value) => {
-    setTilt(value.target.value)
-  }
-
-  const handleChangeTwoWaters = (value) => {
-    setTwoWaters(value.target.value)
-  }
-
-  /*
-  const handleClick = async () => {
-    const installationParams = { ...params, tilt, twoWaters }
-    const scenario = await getPVScenario({
-      token,
-      contract,
-      installationParams,
-    })
-    setParams({ scenario })
-  }
-  */
-
-  useEffect(() => {
-    const installationParams = { ...params, tilt, twoWaters }
-    setParams({ ...installationParams })
-  }, [tilt, twoWaters])
+  const { installationParams } = params
 
   return (
     <div className={classes.root}>
@@ -97,7 +68,6 @@ const InstallationParams = (props) => {
             value={params.orientation}
           />
         </Grid>
-
         <Grid item xs={6}>
           <InputLabel id="tiltLabel" className={classes.label}>
             {t('TILT')}
@@ -105,14 +75,21 @@ const InstallationParams = (props) => {
           <Select
             id="tiltLabel"
             fullWidth
+            required
             variant="outlined"
+            name="tilt"
             label={t('TILT')}
             notched={false}
             className={classes.select}
-            onChange={handleChangeTilt}
+            onChange={(e) => updateParams({ [e.target.name]: e.target.value })}
           >
-            <MenuItem value={15}>{t('FLAT')} 15º</MenuItem>
-            <MenuItem value={30}>{t('INCLINED')} 30º</MenuItem>
+            {installationParams?.tilt
+              ? installationParams.tilt.map((i) => (
+                  <MenuItem value={i} key={i}>
+                    {t(i <= 15 ? 'FLAT' : 'INCLINED')} {i}º
+                  </MenuItem>
+                ))
+              : null}
           </Select>
         </Grid>
         <Grid item xs={6}>
@@ -126,7 +103,7 @@ const InstallationParams = (props) => {
             label={t('TWO_WATERS')}
             notched={false}
             className={classes.select}
-            onChange={handleChangeTwoWaters}
+            onChange={console.log}
           >
             <MenuItem value={true}>{t('YES')}</MenuItem>
             <MenuItem value={false}>{t('NO')}</MenuItem>
@@ -137,7 +114,7 @@ const InstallationParams = (props) => {
   )
 }
 
-export default InstallationParams
+export default Installation
 
 const useStyles = makeStyles((theme) => ({
   root: {
