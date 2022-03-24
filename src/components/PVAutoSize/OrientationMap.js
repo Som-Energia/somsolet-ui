@@ -9,7 +9,6 @@ import Slider from '@material-ui/core/Slider'
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker'
-// import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 import { bearingToCardinal } from 'services/pvautosize/utils'
 
@@ -17,26 +16,24 @@ mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const ZOOM_LEVEL = 18
 
-const OrientationMap = (props) => {
+const OrientationMap = ({ coordinates, zoomLevel, updateParams }) => {
   const classes = useStyles()
-  // const { t } = useTranslation()
-  const { coordinates, zoomLevel, callbackFn } = props
-
   const mapContainer = useRef()
 
-  const [orientation, setOrientation] = useState('0º N')
+  const [azimuth, setAzimuth] = useState('0º N')
+  const [cardinal, setCardinal] = useState('0º N')
   const [rotation, setRotation] = useState(0)
 
   const getOrientationValue = (value) => {
-    const cardinal = bearingToCardinal(value)
+    setCardinal(bearingToCardinal(value))
     setRotation(value)
-    setOrientation(`${value}º ${cardinal}`)
+    setAzimuth(value)
     return value
   }
 
   useEffect(() => {
-    callbackFn({ orientation: orientation })
-  }, [orientation])
+    updateParams({ azimuth, orientation: `${azimuth}º ${cardinal}` })
+  }, [azimuth])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -88,15 +85,15 @@ const OrientationMap = (props) => {
             getAriaValueText={getOrientationValue}
             aria-labelledby="orientation-slider"
             step={10}
-            min={45}
-            max={315}
+            min={180}
+            max={360}
           />
           <TextField
             variant="outlined"
             size="small"
             disabled
             className="orientationInputText"
-            value={orientation}
+            value={`${azimuth}º ${cardinal}`}
           />
         </div>
       </div>

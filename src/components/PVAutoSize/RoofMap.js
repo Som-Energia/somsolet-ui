@@ -21,19 +21,19 @@ mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const ZOOM_LEVEL = 18
 
-const RoofMap = ({ coordinates, callbackFn }) => {
+const RoofMap = ({ coordinates, updateParams }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const mapContainer = useRef()
-  const [edit] = useState(true)
 
+  const [edit] = useState(true)
   const [surfaceDraw, setSurfaceDraw] = useState(false)
   const [surface, setSurface] = useState(0)
   const [deleteDraw, setDeleteDraw] = useState()
   const [zoomLevel, setZoomLevel] = useState(ZOOM_LEVEL)
   const [center, setCenter] = useState(coordinates)
-  const [map, setMap] = useState(null)
+  const [img, setImg] = useState(null)
 
   const base = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static`
   const size = '240x210@2x'
@@ -43,20 +43,20 @@ const RoofMap = ({ coordinates, callbackFn }) => {
     setSurfaceDraw(false)
     setSurface(0)
     setDeleteDraw(Math.random())
-    callbackFn({ surface: undefined })
+    updateParams({ surface: undefined })
   }
 
   useEffect(() => {
     if (surfaceDraw) {
-      callbackFn({ surface, center, zoomLevel })
+      updateParams({ surface, center, zoomLevel })
     }
   }, [surface, surfaceDraw])
 
   useEffect(() => {
-    if (map) {
-      callbackFn({ map })
+    if (img) {
+      updateParams({ img })
     }
-  }, [map])
+  }, [img])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -85,7 +85,7 @@ const RoofMap = ({ coordinates, callbackFn }) => {
       if (data.features.length > 0) {
         setSurfaceDraw(data)
 
-        setMap(
+        setImg(
           `${base}/geojson(${JSON.stringify(
             data
           )})/auto/${size}?${token}&attribution=false&logo=false`
