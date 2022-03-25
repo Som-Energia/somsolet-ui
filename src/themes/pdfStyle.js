@@ -6,6 +6,8 @@ const style = {
     gridTemplateColumns: 'repeat(3,1fr)',
     gridGap: 10,
     fontSize: 14,
+    maxWidth: 3508,
+    margin: '0 auto',
   },
   title: {
     margin: '8px 0',
@@ -213,15 +215,16 @@ const style = {
   graphicContainer: {
     gridColumn: '1/4',
     width: '100%',
-    height: 300,
-    paddingBottom: 90,
+    height: 400,
+    paddingBottom: 120,
+    marginBottom: 120,
   },
   piesContainer: {
     display: 'flex',
   },
   graphicConsumContainer: {
     gridColumn: '1/4',
-    height: 300,
+    height: 400,
     paddingBottom: 50,
   },
 }
