@@ -23,14 +23,14 @@ import Loading from 'components/Loading'
 
 import AccordionPanel from './AccordionPanel'
 
-const PVAccordion = ({ coordinates, token, contract }) => {
+const PVAccordion = ({ coordinates, token, contract, getReport }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const [expanded, setExpanded] = useState(1)
   const [params, setParams] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [error, setError] = useState(false)
   const [completed, setCompleted] = useState(false)
 
   const handleChange = (panel) => {
@@ -75,7 +75,7 @@ const PVAccordion = ({ coordinates, token, contract }) => {
       })
       .catch((error) => {
         console.error(error)
-        setIsError(error)
+        setError(error)
         setIsLoading(false)
       })
   }, [token, contract])
@@ -85,11 +85,9 @@ const PVAccordion = ({ coordinates, token, contract }) => {
     console.log('Params updated:', params)
   }
 
-  console.log({ isError })
-
   return isLoading ? (
     <Loading />
-  ) : isError ? (
+  ) : error ? (
     <p>Error</p>
   ) : (
     <>
@@ -143,7 +141,12 @@ const PVAccordion = ({ coordinates, token, contract }) => {
           title={t('YOUR_ENERGY')}
         >
           <Box px={3} py={2} style={{ width: '100%' }}>
-            <YourEnergy params={params} token={token} contract={contract} />
+            <YourEnergy
+              params={params}
+              token={token}
+              contract={contract}
+              onCreateReport={getReport}
+            />
           </Box>
         </AccordionPanel>
       </Container>
