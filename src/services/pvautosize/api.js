@@ -51,8 +51,12 @@ export const getContractParams = async ({ token, contract }) => {
   })
 }
 
-export const getReport = async ({ token, contract, ...params }) => {
-  const url = `https://heman-demo.somenergia.lan/api/ScenarioReport/${contract}`
+export const getReport = async ({ token, contract, azimuth, ...params }) => {
+  const customAzimuth = Array.isArray(azimuth)
+    ? `?azimuth=${azimuth[0]}&azimuth=${azimuth[1]}`
+    : `?azimuth=${azimuth}`
+
+  const url = `https://heman-demo.somenergia.lan/api/ScenarioReport/${contract}${customAzimuth}`
 
   const headers = {
     Authorization: `token ${token}`,
