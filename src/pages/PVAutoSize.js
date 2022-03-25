@@ -35,7 +35,7 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
             getContract={setContract}
           />
         ) : report ? (
-          <Report data={report} />
+          <Report data={{ ...report, contract }} />
         ) : (
           <PVAccordion
             coordinates={contract?.address?.center}

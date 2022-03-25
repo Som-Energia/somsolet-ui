@@ -19,7 +19,7 @@ import pvautosize from 'images/pvautosize.svg'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
-const AddressSelector = ({ contracts = [], getContract }) => {
+const AddressSelector = ({ contracts, getContract }) => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [contract, setContract] = useState({})

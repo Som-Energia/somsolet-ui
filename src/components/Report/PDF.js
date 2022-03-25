@@ -10,8 +10,15 @@ import placa from '../../images/placa.png'
 import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react/display-name
-export const PDF = React.forwardRef((props, ref) => {
+export const PDF = React.forwardRef(({ data }, ref) => {
   const { t } = useTranslation()
+
+  console.log({ data })
+
+  console.log(data.scenario.loadByPeriodKwh)
+
+  const formatNumber = (number) =>
+    new Intl.NumberFormat('de-DE').format(number.toFixed(2))
 
   return (
     <div style={styles.page} ref={ref}>
@@ -31,14 +38,14 @@ export const PDF = React.forwardRef((props, ref) => {
         <h2 style={styles.title}>{t('DADES_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('DADES_NOM')}: <strong>Oscar</strong>
+            {t('DADES_NOM')}: <strong>-</strong>
           </li>
           <li style={styles.listitem}>
             {t('DADES_DIRECCIO')}:{' '}
-            <strong>Av Principe de Asturias 6 Ciñera 24660 Leon</strong>
+            <strong>{data.contract.address.place_name}</strong>
           </li>
           <li style={styles.listitem}>
-            {t('DADES_CONTRACTE')}: <strong>123456</strong>
+            {t('DADES_CONTRACTE')}: <strong>{data.contract.name}</strong>
           </li>
         </ul>
       </div>
@@ -46,13 +53,15 @@ export const PDF = React.forwardRef((props, ref) => {
         <h2 style={styles.title}> {t('COBERTA_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('COBERTA_ORIENTACIO')}: <strong>Sud</strong>
+            {t('COBERTA_ORIENTACIO')}:{' '}
+            <strong>{data.params.orientation}</strong>
           </li>
           <li style={styles.listitem}>
-            {t('COBERTA_INCLINACIO')}: <strong>10</strong>
+            {t('COBERTA_INCLINACIO')}:{' '}
+            <strong>{data.scenario.tiltDegrees}º</strong>
           </li>
           <li style={styles.listitem}>
-            {t('COBERTA_SUPERFICIE')}: <strong>35</strong>
+            {t('COBERTA_SUPERFICIE')}: <strong>{data.scenario.areaM2}m²</strong>
           </li>
         </ul>
       </div>
@@ -60,17 +69,29 @@ export const PDF = React.forwardRef((props, ref) => {
         <h2 style={styles.title}> {t('US_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('US_POTENCIA')}: <strong>P1 - P3</strong>
+            {t('US_POTENCIA')}: <strong>-</strong>
           </li>
           <li style={styles.listitem}>
-            {t('US_TARIFA')}: <strong>P3</strong>
+            {t('US_TARIFA')}: <strong>-</strong>
           </li>
           <li style={styles.listitem}>
-            {t('US_ANUAL')}: <strong>P3</strong>
+            {t('US_ANUAL')}:{' '}
+            <div style={styles.listpowers}>
+              {data.scenario.loadByPeriodKwh &&
+                Object.entries(data.scenario.loadByPeriodKwh)
+                  .sort()
+                  .map(([key, value]) => (
+                    <span key={key}>
+                      {key}: <strong>{formatNumber(value)} </strong>
+                    </span>
+                  ))}
+            </div>
           </li>
         </ul>
       </div>
-      <div style={styles.image}></div>
+      <div style={styles.image}>
+        <img src={data.params.img} style={{ maxWidth: '100%' }} />
+      </div>
 
       <div style={styles.plaques}>
         <img src={placa} width="auto" height="200px" />
@@ -79,19 +100,28 @@ export const PDF = React.forwardRef((props, ref) => {
         <h2 style={styles.title}>{t('INSTALACIO_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('INSTALACIO_NOMBRE')}: <strong>9</strong>
+            {t('INSTALACIO_NOMBRE')}: <strong>{data.scenario.nModules}</strong>
           </li>
           <li style={styles.listitem}>
-            {t('INSTALACIO_POTENCIA')}: <strong>100</strong>
+            {t('INSTALACIO_POTENCIA')}:{' '}
+            <strong>
+              {formatNumber(data.scenario.peakPowerKw * data.scenario.nModules)}{' '}
+              kWh
+            </strong>
           </li>
           <li style={styles.listitem}>
-            {t('INSTALACIO_TOTAL')}: <strong>900</strong>
+            {t('INSTALACIO_TOTAL')}:{' '}
+            <strong>{formatNumber(data.scenario.peakPowerKw)} kWh</strong>
           </li>
           <li style={styles.listitem}>
-            {t('INSTALACIO_ANUAL')}: <strong>10800</strong>
+            {t('INSTALACIO_ANUAL')}:{' '}
+            <strong>{formatNumber(data.scenario.productionKwhYear)} kWa</strong>
           </li>
           <li style={styles.listitem}>
-            {t('INSTALACIO_COST')}: <strong>7000</strong>
+            {t('INSTALACIO_COST')}:{' '}
+            <strong>
+              {formatNumber(data.scenario.installationCostEuro)} €
+            </strong>
           </li>
         </ul>
       </div>
@@ -102,18 +132,31 @@ export const PDF = React.forwardRef((props, ref) => {
             <table style={styles.table}>
               <tr>
                 <td style={styles.tableHeading}>{t('ESTUDI_AUTOGENERACIO')}</td>
-                <td style={styles.tableCell}>5800 kWh/{t('ANY')}º</td>
-                <td style={styles.tableCell}>6000 €/{t('ANY')}</td>
+                <td style={styles.tableCell}>
+                  {formatNumber(data.scenario.productionToLoadKwhYear)} kWh/
+                  {t('ANY')}º
+                </td>
+                <td style={styles.tableCell}>
+                  {formatNumber(data.scenario.productionToLoadEuroYear)} €/
+                  {t('ANY')}
+                </td>
               </tr>
               <tr>
                 <td style={styles.tableHeading}>{t('ESTUDI_EXCEDENT')}</td>
-                <td style={styles.tableCell}>100 kWh/{t('ANY')}</td>
-                <td style={styles.tableCell}>500 €/{t('ANY')}</td>
+                <td style={styles.tableCell}>
+                  {formatNumber(data.scenario.productionToGridKwhYear)} kWh/
+                  {t('ANY')}
+                </td>
+                <td style={styles.tableCell}>
+                  {formatNumber(data.scenario.productionToGridEuroYear)} €/
+                  {t('ANY')}
+                </td>
               </tr>
               <tr>
                 <td style={styles.tableHeading}>{t('ESTUDI_XARXA')}</td>
                 <td colSpan="2" style={styles.tableCell}>
-                  800 kWh/{t('ANY')}
+                  {formatNumber(data.scenario.loadFromGridKwhYear)} kWh/
+                  {t('ANY')}
                 </td>
               </tr>
               <tr>
@@ -121,7 +164,7 @@ export const PDF = React.forwardRef((props, ref) => {
                   <strong>{t('ESTUDI_ESTALVI')}</strong>
                 </td>
                 <td colSpan="2" style={styles.tableCell}>
-                  9000 €/{t('ANY')}
+                  {formatNumber(data.scenario.savingsEuroYear)} €/{t('ANY')}
                 </td>
               </tr>
               <tr>
@@ -129,20 +172,20 @@ export const PDF = React.forwardRef((props, ref) => {
                   <strong>{t('ESTUDI_RETORN')}</strong>
                 </td>
                 <td colSpan="2" style={styles.tableCell}>
-                  5 {t('ANYS')}
+                  {Math.round(data.scenario.paybackYears)} {t('ANYS')}
                 </td>
               </tr>
             </table>
           </div>
           <div style={styles.piesContainer}>
             <PieChart
-              percentage={25}
+              percentage={data.scenario.productionToLoadPercent}
               color="#b9db42"
               label={t('PIE_AUTOCONSUM_TITLE')}
               description={t('PIE_AUTOCONSUM_DESCRIPTION')}
             />
             <PieChart
-              percentage={39}
+              percentage={data.scenario.productionToGridPercent}
               color="#b9db42"
               label={t('PIE_AUTOSUFICIENCIA_TITLE')}
               description={t('PIE_AUTOSUFICIENCIA_DESCRIPTION')}
@@ -152,11 +195,18 @@ export const PDF = React.forwardRef((props, ref) => {
       </div>
       <div style={styles.graphicContainer}>
         <h3>{t('PERFIL_TITLE')}</h3>
-        <GraphicPerfil />
+        <GraphicPerfil
+          profile={data.scenario.dailyLoadProfileKwh}
+          autoproduction={data.scenario.dailyProductionProfileKwh}
+        />
       </div>
       <div style={styles.graphicConsumContainer}>
         <h3>{t('PIE_AUTOSUFICIENCIA_TITLE')}</h3>
-        <ReportConsumGraph />
+        <ReportConsumGraph
+          autoconsum={data.scenario.monthlyProductionToLoadEuro}
+          consum={data.scenario.monthlyGridToLoadEuro}
+          excedencia={data.scenario.monthlyProductionToGridEuro}
+        />
       </div>
       <div style={styles.properespases}>
         <h2 style={styles.heading}>{t('PROPERESPASES_TITLE')}</h2>

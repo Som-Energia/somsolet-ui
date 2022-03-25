@@ -58,31 +58,32 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
     }
 
     if (expanded === 3) {
-      const isValid = params?.tilt !== '' && params?.twoWaters !== ''
+      const isValid = params?.tilt !== '' && params?.hasTwoWatters !== ''
       setCompleted(isValid)
     }
   }, [expanded, params])
 
   useEffect(() => {
-    setIsLoading(true)
-    getContractParams({ token, contract })
-      .then((rsp) => {
-        setParams({
-          ...params,
-          installationParams: { ...params.installationParams, ...rsp },
+    if (!params.installationParams) {
+      setIsLoading(true)
+      getContractParams({ token, contract })
+        .then((rsp) => {
+          setParams({
+            ...params,
+            installationParams: { ...params.installationParams, ...rsp },
+          })
+          setIsLoading(false)
         })
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setError(error)
-        setIsLoading(false)
-      })
-  }, [token, contract])
+        .catch((error) => {
+          console.error(error)
+          setError(error)
+          setIsLoading(false)
+        })
+    }
+  }, [])
 
   const updateParams = (newParams) => {
     setParams({ ...params, ...newParams })
-    console.log('Params updated:', params)
   }
 
   return isLoading ? (
@@ -109,11 +110,7 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
           icon={<ExploreOutlinedIcon color="primary" />}
           title={t('ROOF_ORIENTATION')}
         >
-          <OrientationMap
-            coordinates={params?.center || coordinates}
-            zoomLevel={params?.zoomLevel}
-            updateParams={updateParams}
-          />
+          <OrientationMap updateParams={updateParams} params={params} />
         </AccordionPanel>
 
         <AccordionPanel

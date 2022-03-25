@@ -31,6 +31,12 @@ const style = {
     justifyContent: 'flex-end',
     gap: 10,
   },
+  listpowers: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 5,
+    textTransform: 'uppercase',
+  },
   warning: {
     gridColumn: '1/4',
     backgroundColor: '#f9cb9c',
@@ -58,8 +64,6 @@ const style = {
   image: {
     gridColumn: '3/4',
     gridRow: '3/5',
-    backgroundColor: '#ccc',
-    padding: 10,
   },
   plaques: {
     gridColumn: '1/2',
