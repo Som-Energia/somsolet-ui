@@ -13,7 +13,7 @@ import { getReport } from '../../services/pvautosize/api'
 import InputLabel from '@material-ui/core/InputLabel'
 import Loading from 'components/Loading'
 
-const YourEnergy = ({ params, token, contract }) => {
+const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   const classes = useStyles()
 
   const { t } = useTranslation()
@@ -32,7 +32,7 @@ const YourEnergy = ({ params, token, contract }) => {
     }).format(scenario?.[attribute] || '0')
   }
 
-  const handleClick = () => {}
+  const handleClick = () => onCreateReport(scenario)
 
   useEffect(() => {
     if (contract && tilt && azimuth && token) {
@@ -50,12 +50,12 @@ const YourEnergy = ({ params, token, contract }) => {
     }
   }, [power, contract, tilt, azimuth, token])
 
-  if (error) console.error(error)
-
   return (
     <>
       {isLoading ? (
         <Loading />
+      ) : error ? (
+        <p>Error</p>
       ) : params?.installationParams?.power ? (
         <div className={classes.container}>
           <Typography className={classes.reportTitle}>
@@ -133,7 +133,6 @@ const YourEnergy = ({ params, token, contract }) => {
             className={classes.button}
             startIcon={<DescriptionOutlinedIcon />}
             onClick={handleClick}
-            disabled={!!scenario}
           >
             {t('SEE_REPORT')}
           </Button>

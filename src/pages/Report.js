@@ -7,7 +7,7 @@ import { getReport } from '../services/somsolet/api'
 const Report = () => {
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [error, setError] = useState(false)
 
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
@@ -23,14 +23,14 @@ const Report = () => {
       })
       .catch((error) => {
         console.error(error)
-        setIsError(error)
+        setError(error)
         setIsLoading(false)
       })
   }, [])
 
   return isLoading ? (
     <Loading />
-  ) : isError ? (
+  ) : error ? (
     <p>Error</p>
   ) : (
     <>
