@@ -21,7 +21,12 @@ const OrientationMap = ({ updateParams, params }) => {
   const mapContainer = useRef()
   const { t } = useTranslation()
 
-  const { center: coordinates, zoomLevel, installationParams } = params
+  const {
+    center: coordinates,
+    zoomLevel,
+    installationParams,
+    hasTwoWaters,
+  } = params
 
   const [azimuth, setAzimuth] = useState(null)
   const [cardinal, setCardinal] = useState(null)
@@ -34,6 +39,16 @@ const OrientationMap = ({ updateParams, params }) => {
     setAzimuth(value)
     return value
   }
+
+  useEffect(() => {
+    if (hasTwoWaters && azimuth) {
+      updateParams({
+        azimuth: installationParams.azimuth.find(
+          (a) => a[0] === azimuth && a.length === 2
+        ),
+      })
+    }
+  }, [hasTwoWaters])
 
   useEffect(() => {
     if (installationParams) {

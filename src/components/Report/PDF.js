@@ -13,10 +13,6 @@ import { useTranslation } from 'react-i18next'
 export const PDF = React.forwardRef(({ data }, ref) => {
   const { t } = useTranslation()
 
-  console.log({ data })
-
-  console.log(data.scenario.loadByPeriodKwh)
-
   const formatNumber = (number) =>
     new Intl.NumberFormat('de-DE').format(number.toFixed(2))
 
