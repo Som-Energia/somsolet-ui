@@ -102,8 +102,10 @@ const Installation = ({ params, updateParams }) => {
             variant="outlined"
             label={t('TWO_WATERS')}
             notched={false}
+            name="hasTwoWaters"
             className={classes.select}
-            onChange={console.log}
+            onChange={(e) => updateParams({ [e.target.name]: e.target.value })}
+            required
           >
             <MenuItem value={true}>{t('YES')}</MenuItem>
             <MenuItem value={false}>{t('NO')}</MenuItem>

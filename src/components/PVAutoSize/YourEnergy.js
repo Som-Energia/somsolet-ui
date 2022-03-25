@@ -32,7 +32,7 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
     }).format(scenario?.[attribute] || '0')
   }
 
-  const handleClick = () => onCreateReport(scenario)
+  const handleClick = () => onCreateReport({ scenario, params })
 
   useEffect(() => {
     if (contract && tilt && azimuth && token) {
