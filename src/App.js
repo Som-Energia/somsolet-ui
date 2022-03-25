@@ -7,9 +7,18 @@ import './i18n/i18n'
 import './App.css'
 
 const App = (props) => {
+  const loadContractData = () => {
+    const contractData =
+      typeof props.contract === 'string' && props.contract !== ''
+        ? JSON.parse(props.contract)
+        : []
+
+    return { ...contractData }
+  }
+
   const loadSomSolet = () => {
     const SomSolet = lazy(() => import('./pages/SomSolet'))
-    return <SomSolet {...props} />
+    return <SomSolet {...props} contract={loadContractData()} />
   }
 
   const loadPVAutoSize = () => {
