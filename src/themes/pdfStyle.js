@@ -159,7 +159,7 @@ const style = {
     backgroundColor: '#f9cb9c',
     margin: 0,
     padding: 10,
-    height: 130,
+    minHeight: 140,
   },
   calculsTitle: {
     backgroundColor: '#b3b0b0',
