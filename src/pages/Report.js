@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { PDF } from '../components/Report/PDF'
+import Button from '@material-ui/core/Button'
+import { useTranslation } from 'react-i18next'
 
 const Report = ({ data }) => {
   const componentRef = useRef()
@@ -9,11 +11,17 @@ const Report = ({ data }) => {
     content: () => componentRef.current,
   })
 
+  const { t } = useTranslation()
+
   return (
-    <>
-      <button onClick={handlePrint}>Print this out!</button>
+    <div style={{ maxWidth: 1145, margin: '0 auto' }}>
+      <div style={{ backgroundColor: 'white', padding: 15, marginBottom: 20 }}>
+        <Button onClick={handlePrint} style={{ backgroundColor: '#b9db42' }}>
+          {t('IMPRIMIR')}
+        </Button>
+      </div>
       <PDF data={data} ref={componentRef} />
-    </>
+    </div>
   )
 }
 

@@ -49,5 +49,6 @@
   "PERFIL_AUTOPRODUCCIO": "Autoproducció diària a la teva zona geogràfica",
   "AUTOCONSUM_DIRECTE": "Valor energètic i economic de autoconsum directe",
   "CONSUM": "Valor energètic i economic de consum",
-  "ENERGIA_EXCEDENTARIA": "Valor energètic i economic de energia excedentaria compensada"
+  "ENERGIA_EXCEDENTARIA": "Valor energètic i economic de energia excedentaria compensada",
+  "IMPRIMIR": "Imprimir informe"
 }
