@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   BarChart,
   Bar,
@@ -7,30 +8,35 @@ import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts'
 
 const ReportConsumGraph = ({ autoconsum, consum, excedencia }) => {
+  const { t } = useTranslation()
+
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'June',
-    'July',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUNE',
+    'JULY',
+    'AUG',
+    'SEPT',
+    'OCT',
+    'NOV',
+    'DEC',
   ]
 
   const data = months.map((month, k) => ({
-    month,
+    month: t(month),
     ac: autoconsum[k],
     c: consum[k],
     ex: excedencia[k],
   }))
+
+  const formatter = (value) => `${Math.round(value)}€`
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -47,17 +53,29 @@ const ReportConsumGraph = ({ autoconsum, consum, excedencia }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
-        <YAxis />
+        <YAxis tickFormatter={formatter} />
         <Legend verticalAlign="bottom" align="right" height={36} />
         <Bar
           dataKey="ac"
           stackId="a"
           fill="#b9db42"
-          label="holi"
-          legendType="f"
-        />
-        <Bar dataKey="c" stackId="a" fill="#beaf17" />
-        <Bar dataKey="ex" stackId="a" fill="#d72929" />
+          name={t('AUTOCONSUM_DIRECTE')}
+        >
+          <LabelList dataKey="ac" position="inside" formatter={formatter} />
+        </Bar>
+
+        <Bar dataKey="c" stackId="a" fill="#beaf17" name={t('CONSUM')}>
+          <LabelList dataKey="c" position="inside" formatter={formatter} />
+        </Bar>
+
+        <Bar
+          dataKey="ex"
+          stackId="a"
+          fill="#d72929"
+          name={t('ENERGIA_EXCEDENTARIA')}
+        >
+          <LabelList dataKey="ex" position="inside" formatter={formatter} />
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   )
