@@ -32,5 +32,22 @@
   "INCLINED": "Inclinada",
   "TWO_WATERS": "Teulada 2 aigües",
   "YES": "Sí",
-  "NO": "No"
+  "NO": "No",
+  "JAN": "Gener",
+  "FEB": "Febrer",
+  "MAR": "Març",
+  "APR": "Abril",
+  "MAY": "Maig",
+  "JUNE": "Juny",
+  "JULY": "Juliol",
+  "AUG": "Agost",
+  "SEPT": "Setembre",
+  "OCT": "Octubre",
+  "NOV": "Novembre",
+  "DEC": "Desembre",
+  "PERFIL_DIARI": "El teu perfil diarid'ús d'energia",
+  "PERFIL_AUTOPRODUCCIO": "Autoproducció diària a la teva zona geogràfica",
+  "AUTOCONSUM_DIRECTE": "Valor energètic i economic de autoconsum directe",
+  "CONSUM": "Valor energètic i economic de consum",
+  "ENERGIA_EXCEDENTARIA": "Valor energètic i economic de energia excedentaria compensada"
 }

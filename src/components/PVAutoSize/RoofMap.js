@@ -36,7 +36,7 @@ const RoofMap = ({ coordinates, updateParams }) => {
   const [img, setImg] = useState(null)
 
   const base = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static`
-  const size = '240x210@2x'
+  const size = '500x500@2x'
   const token = `access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
 
   const handleDelete = () => {

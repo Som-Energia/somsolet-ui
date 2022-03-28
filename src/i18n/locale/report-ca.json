@@ -29,7 +29,7 @@
   "ESTUDI_RETORN": "Retorn inversió",
   "PIE_AUTOCONSUM_TITLE": "% Autoconsum directe",
   "PIE_AUTOCONSUM_DESCRIPTION": "(Energia anual consumida / energia anual produida)",
-  "PIE_AUTOSUFICIENCIA_TITLE": "% Autosuficiencia",
+  "PIE_AUTOSUFICIENCIA_TITLE": "Consum per mesos (€)",
   "PIE_AUTOSUFICIENCIA_DESCRIPTION": "(Energia anual autoconsumida / energia anual denergia",
   "PERFIL_TITLE": "El teu perfil diari denergia",
   "PERFIL_ELECTRIC": "Electric",
