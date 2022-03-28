@@ -69,8 +69,6 @@ const style = {
   },
   plaques: {
     gridColumn: '1/2',
-    backgroundColor: '#ccc',
-    padding: 10,
     textAlign: 'center',
   },
   installacio: {

@@ -7,6 +7,8 @@ import logo from '../../images/logo_som_energia.png'
 import bombeta from '../../images/bombeta.png'
 import dona from '../../images/dona.png'
 import placa from '../../images/placa.png'
+import casa from '../../images/casa.png'
+import euro from '../../images/euro.png'
 import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react/display-name
@@ -14,7 +16,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
   const { t } = useTranslation()
 
   const formatNumber = (number) =>
-    new Intl.NumberFormat('de-DE').format(number.toFixed(2))
+    number ? new Intl.NumberFormat('de-DE').format(number.toFixed(2)) : '-'
 
   return (
     <div style={styles.page} ref={ref}>
@@ -78,7 +80,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
                   .sort()
                   .map(([key, value]) => (
                     <span key={key}>
-                      {key}: <strong>{formatNumber(value)} </strong>
+                      {key}: <strong>{formatNumber(value)}€/kWh </strong>
                     </span>
                   ))}
             </div>
@@ -90,7 +92,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
       </div>
 
       <div style={styles.plaques}>
-        <img src={placa} width="auto" height="200px" />
+        <img src={casa} width="auto" height="200px" />
       </div>
       <div style={styles.installacio}>
         <h2 style={styles.title}>{t('INSTALACIO_TITLE')}</h2>
@@ -130,7 +132,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
                 <td style={styles.tableHeading}>{t('ESTUDI_AUTOGENERACIO')}</td>
                 <td style={styles.tableCell}>
                   {formatNumber(data.scenario.productionToLoadKwhYear)} kWh/
-                  {t('ANY')}º
+                  {t('ANY')}
                 </td>
                 <td style={styles.tableCell}>
                   {formatNumber(data.scenario.productionToLoadEuroYear)} €/
@@ -150,8 +152,12 @@ export const PDF = React.forwardRef(({ data }, ref) => {
               </tr>
               <tr>
                 <td style={styles.tableHeading}>{t('ESTUDI_XARXA')}</td>
-                <td colSpan="2" style={styles.tableCell}>
+                <td style={styles.tableCell}>
                   {formatNumber(data.scenario.loadFromGridKwhYear)} kWh/
+                  {t('ANY')}
+                </td>
+                <td style={styles.tableCell}>
+                  {formatNumber(data.scenario.loadFromGridEuroYear)} kWh/
                   {t('ANY')}
                 </td>
               </tr>
@@ -302,7 +308,8 @@ export const PDF = React.forwardRef(({ data }, ref) => {
         <p style={styles.calculsPrimera}>{t('DESCRIPTION')} </p>
         <p style={styles.calculsSegona}>{t('TEXT')} </p>
       </div>
-      <div>
+      <div style={styles.calculsContainer}>
+        <img src={euro} style={styles.calculsImage} />
         <h3 style={styles.calculsTitle}>{t('ECONOMIQUES_TITLE')} </h3>
         <p style={styles.calculsPrimera}>
           <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
