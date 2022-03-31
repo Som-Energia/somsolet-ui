@@ -19,7 +19,7 @@ import pvautosize from 'images/pvautosize.svg'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
-const AddressSelector = ({ contracts = [], callbackFn }) => {
+const AddressSelector = ({ contracts, getContract }) => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [contract, setContract] = useState({})
@@ -27,7 +27,6 @@ const AddressSelector = ({ contracts = [], callbackFn }) => {
 
   const handleChange = (event) => {
     const contract = contracts.find((item) => item.name === event.target.value)
-    console.log(contract)
     setContract(contract)
   }
 
@@ -36,7 +35,7 @@ const AddressSelector = ({ contracts = [], callbackFn }) => {
     setLoading(true)
     const data = await geocodeAddress(contract?.address)
     const geocodedAddress = data?.features?.[0]
-    callbackFn && callbackFn({ ...contract, address: geocodedAddress })
+    getContract && getContract({ ...contract, address: geocodedAddress })
     setLoading(false)
   }
 

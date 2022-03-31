@@ -2,26 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
 
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 
+import { getReport } from '../../services/pvautosize/api'
+import InputLabel from '@material-ui/core/InputLabel'
 import Loading from 'components/Loading'
-import { getPVScenario } from 'services/pvautosize/api'
 
-const YourEnergy = (props) => {
+const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   const classes = useStyles()
-  const { t } = useTranslation()
-  const { params, token, contract } = props
 
-  const [loading, setLoading] = useState(false)
+  const { t } = useTranslation()
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   const [scenario, setScenario] = useState()
-  const [power, setPower] = useState('')
+  const [power, setPower] = useState()
+  const [peakPowerKw, setPeakPowerKw] = useState()
+
+  const { tilt, azimuth } = params
 
   const niceFloat = (attribute, maximumFractionDigits = 2) => {
     return new Intl.NumberFormat('ca', {
@@ -29,133 +32,112 @@ const YourEnergy = (props) => {
     }).format(scenario?.[attribute] || '0')
   }
 
-  const handleChangePower = (event) => {
-    setPower(event.target.value)
-  }
-
-  const handleClick = () => {
-    console.log('click!')
-  }
+  const handleClick = () => onCreateReport({ scenario, params })
 
   useEffect(() => {
-    const requestScenario = async () => {
-      const installationParams = { ...params, power }
-      setLoading(true)
-      const data = await getPVScenario({
-        token,
-        contract,
-        installationParams,
-      })
-      setScenario(data)
-      setLoading(false)
+    if (contract && tilt && azimuth && token) {
+      setIsLoading(true)
+      getReport({ token, contract, tilt, power, azimuth })
+        .then((rsp) => {
+          setScenario(rsp)
+          !power && setPeakPowerKw(rsp.peakPowerKw)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setError(error)
+          setIsLoading(false)
+        })
     }
-    requestScenario()
-  }, [power])
+  }, [power, contract, tilt, azimuth, token])
 
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Loading />
-      ) : (
-        <Box mt={1} style={{ flex: 1 }}>
-          <Box className={classes.row}>
-            {t('YOUR_ENERGY_ANNUAL_USE')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('loadKwhYear')}</span>
-              &nbsp;kWh/{t('YEAR')}
-            </Box>
-          </Box>
+      ) : error ? (
+        <p>Error</p>
+      ) : params?.installationParams?.power ? (
+        <div className={classes.container}>
+          <Typography className={classes.reportTitle}>
+            {t('POWER_PEAK')}
+          </Typography>
+
+          <InputLabel id="potenciaLabel" className={classes.label}>
+            {t('POTENCIA')}
+          </InputLabel>
+          <Select
+            id="potenciaLabel"
+            fullWidth
+            variant="outlined"
+            name="potencia"
+            label={t('POTENCIA')}
+            notched={false}
+            defaultValue={peakPowerKw}
+            value={power}
+            className={classes.select}
+            onChange={(e) => setPower(e.target.value)}
+          >
+            {params.installationParams.power.map((p) => (
+              <MenuItem value={p} key={p}>
+                {p === peakPowerKw ? `${p} (${t('POTENCIA_OPTIMA')})` : p}
+              </MenuItem>
+            ))}
+          </Select>
           <Typography className={classes.reportTitle}>
             {t('ESTIMATED_ANNUAL_GENERATION')}
           </Typography>
-          <Box className={classes.row}>
-            {t('PRODUCED')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('productionKwhYear')}</span>
-              &nbsp;kWh/{t('YEAR')}
-            </Box>
-          </Box>
-          <Box className={classes.row}>
-            {t('INSTANT_AUTOGENERATION')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('productionToLoadKwhYear')}</span>
-              &nbsp;kWh/{t('YEAR')}
-            </Box>
-          </Box>
-          <Box className={classes.row}>
-            {t('SURPLUS')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('productionToGridKwhYear')}</span>
-              &nbsp;kWh/{t('YEAR')}
-            </Box>
-          </Box>
-
+          <p>{t('YOUR_ENERGY_ANNUAL_USE')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('loadKwhYear')}</span>
+            &nbsp;kWh/{t('YEAR')}
+          </div>
+          <p>{t('PRODUCED')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('productionKwhYear')}</span>
+            &nbsp;kWh/{t('YEAR')}
+          </div>
+          <p>{t('INSTANT_AUTOGENERATION')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('productionToLoadKwhYear')}</span>
+            &nbsp;kWh/{t('YEAR')}
+          </div>
+          <p>{t('SURPLUS')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('productionToGridKwhYear')}</span>
+            &nbsp;kWh/{t('YEAR')}
+          </div>
           <Typography className={classes.reportTitle}>
             {t('ESTIMATED_ANNUAL_SAVINGS_COSTS')}
           </Typography>
-          <Box className={classes.row}>
-            {t('SAVING')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('savingsEuroYear')}</span>
-              &nbsp;€/{t('YEAR')}
-            </Box>
-          </Box>
-          <Box className={classes.row}>
-            {t('INSTALLATION_COST')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('installationCostEuro')}</span>
-              &nbsp;€
-            </Box>
-          </Box>
-          <Box className={classes.row}>
-            {t('RETURN_WITH_COMP')}
-            <Box className={classes.reportValue}>
-              <span>{niceFloat('paybackYears', 1)}</span>
-              &nbsp;{t('YEARS')}
-            </Box>
-          </Box>
-
-          <Box>
-            <Typography className={classes.reportTitle}>
-              {t('POWER_PEAK')}
-            </Typography>
-            <Select
-              id="powerLabel"
-              fullWidth
-              variant="outlined"
-              label={t('POWER_PEAK')}
-              notched={false}
-              className={classes.select}
-              onChange={handleChangePower}
-              value={power}
-              startAdornment={
-                <InputAdornment position="start">kWp</InputAdornment>
-              }
-            >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={2.5}>2.5</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-            </Select>
-          </Box>
-          <Box style={{ marginTop: '1.5rem', marginBottom: '0.75rem' }}>
-            <Button
-              fullWidth
-              color="primary"
-              size="large"
-              disableElevation
-              variant="contained"
-              className={classes.button}
-              startIcon={<DescriptionOutlinedIcon />}
-              onClick={handleClick}
-              disabled={!!scenario}
-            >
-              {t('SEE_REPORT')}
-            </Button>
-          </Box>
-        </Box>
-      )}
+          <p>{t('SAVING')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('savingsEuroYear')}</span>
+            &nbsp;€/{t('YEAR')}
+          </div>
+          <p>{t('INSTALLATION_COST')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('installationCostEuro')}</span>
+            &nbsp;€
+          </div>
+          <p>{t('RETURN_WITH_COMP')}</p>
+          <div className={classes.reportValue}>
+            <span>{niceFloat('paybackYears', 1)}</span>
+            &nbsp;{t('YEARS')}
+          </div>
+          <Button
+            fullWidth
+            color="primary"
+            size="large"
+            disableElevation
+            variant="contained"
+            className={classes.button}
+            startIcon={<DescriptionOutlinedIcon />}
+            onClick={handleClick}
+          >
+            {t('SEE_REPORT')}
+          </Button>
+        </div>
+      ) : null}
     </>
   )
 }
@@ -163,6 +145,11 @@ const YourEnergy = (props) => {
 export default YourEnergy
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    alignItems: 'center',
+  },
   row: {
     width: '100%',
     display: 'flex',
@@ -171,7 +158,20 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '1rem',
   },
+  select: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '2px solid #9abd20 !important',
+    },
+  },
+  button: {
+    gridColumn: '1/3',
+  },
+  label: {
+    fontSize: '0.9rem',
+    marginBottom: '8px',
+  },
   reportTitle: {
+    gridColumn: '1/3',
     textTransform: 'uppercase',
     marginTop: '16px',
     marginBottom: '8px',

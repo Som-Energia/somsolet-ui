@@ -11,18 +11,23 @@ import PVAUTOSIZE_ES from './locale/pvautosize-es.json'
 import PVAUTOSIZE_GL from './locale/pvautosize-gl.json'
 import PVAUTOSIZE_EU from './locale/pvautosize-eu.json'
 
+import REPORT_CA from './locale/report-ca.json'
+import REPORT_ES from './locale/report-es.json'
+import REPORT_GL from './locale/report-gl.json'
+import REPORT_EU from './locale/report-eu.json'
+
 const resources = {
   ca: {
-    translation: { ...SOMSOLET_CA, ...PVAUTOSIZE_CA },
+    translation: { ...SOMSOLET_CA, ...PVAUTOSIZE_CA, ...REPORT_CA },
   },
   es: {
-    translation: { ...SOMSOLET_ES, ...PVAUTOSIZE_ES },
+    translation: { ...SOMSOLET_ES, ...PVAUTOSIZE_ES, ...REPORT_ES },
   },
   gl: {
-    translation: { ...SOMSOLET_GL, ...PVAUTOSIZE_GL },
+    translation: { ...SOMSOLET_GL, ...PVAUTOSIZE_GL, ...REPORT_GL },
   },
   eu: {
-    translation: { ...SOMSOLET_EU, ...PVAUTOSIZE_EU },
+    translation: { ...SOMSOLET_EU, ...PVAUTOSIZE_EU, ...REPORT_EU },
   },
 }
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
+
+import { makeStyles } from '@material-ui/core/styles'
 
 import Container from '@material-ui/core/Container'
 import Fab from '@material-ui/core/Fab'
 import Zoom from '@material-ui/core/Zoom'
-
+import { Box } from '@material-ui/core'
 import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined'
 import NavigateNextIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -13,21 +14,23 @@ import MapIcon from '@material-ui/icons/MapOutlined'
 import FlashIcon from '@material-ui/icons/FlashOnOutlined'
 import InputOutlinedIcon from '@material-ui/icons/InputOutlined'
 
+import { getContractParams } from '../../services/pvautosize/api'
 import RoofMap from 'components/PVAutoSize/RoofMap'
 import OrientationMap from 'components/PVAutoSize/OrientationMap'
-import InstallationParams from 'components/PVAutoSize/InstallationParams'
+import Installation from 'components/PVAutoSize/Installation'
 import YourEnergy from 'components/PVAutoSize/YourEnergy'
+import Loading from 'components/Loading'
 
 import AccordionPanel from './AccordionPanel'
-import { Box } from '@material-ui/core'
 
-const PVAccordion = (props) => {
-  const { coordinates, token, contract } = props
+const PVAccordion = ({ coordinates, token, contract, getReport }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const [expanded, setExpanded] = useState(1)
   const [params, setParams] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
   const [completed, setCompleted] = useState(false)
 
   const handleChange = (panel) => {
@@ -44,30 +47,50 @@ const PVAccordion = (props) => {
   }
 
   useEffect(() => {
-    console.log(params)
     if (expanded === 1) {
       const isValid = params?.surface !== undefined
       setCompleted(isValid)
     }
 
     if (expanded === 2) {
-      const isValid = params?.orientation !== undefined
+      const isValid = params?.azimuth !== undefined
       setCompleted(isValid)
     }
 
     if (expanded === 3) {
-      console.log('is valid?')
-      console.log(params)
-      const isValid = params?.tilt !== '' && params?.twoWaters !== ''
+      const isValid = params?.tilt !== '' && params?.hasTwoWatters !== ''
       setCompleted(isValid)
     }
   }, [expanded, params])
+
+  useEffect(() => {
+    if (!params.installationParams) {
+      setIsLoading(true)
+      getContractParams({ token, contract })
+        .then((rsp) => {
+          setParams({
+            ...params,
+            installationParams: { ...params.installationParams, ...rsp },
+          })
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          console.error(error)
+          setError(error)
+          setIsLoading(false)
+        })
+    }
+  }, [])
 
   const updateParams = (newParams) => {
     setParams({ ...params, ...newParams })
   }
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : error ? (
+    <p>Error</p>
+  ) : (
     <>
       <Container maxWidth="sm" className={classes.root}>
         <AccordionPanel
@@ -77,7 +100,7 @@ const PVAccordion = (props) => {
           icon={<MapIcon color="primary" />}
           title={t('ROOF_SURFACE')}
         >
-          <RoofMap coordinates={coordinates} callbackFn={updateParams} />
+          <RoofMap coordinates={coordinates} updateParams={updateParams} />
         </AccordionPanel>
 
         <AccordionPanel
@@ -87,11 +110,7 @@ const PVAccordion = (props) => {
           icon={<ExploreOutlinedIcon color="primary" />}
           title={t('ROOF_ORIENTATION')}
         >
-          <OrientationMap
-            coordinates={params?.center || coordinates}
-            zoomLevel={params?.zoomLevel}
-            callbackFn={updateParams}
-          />
+          <OrientationMap updateParams={updateParams} params={params} />
         </AccordionPanel>
 
         <AccordionPanel
@@ -102,11 +121,11 @@ const PVAccordion = (props) => {
           title={t('INSTALLATION_PARAMS')}
         >
           <Box px={2} py={1}>
-            <InstallationParams
+            <Installation
               params={params}
               token={token}
               contract={contract}
-              setParams={updateParams}
+              updateParams={updateParams}
             />
           </Box>
         </AccordionPanel>
@@ -119,7 +138,12 @@ const PVAccordion = (props) => {
           title={t('YOUR_ENERGY')}
         >
           <Box px={3} py={2} style={{ width: '100%' }}>
-            <YourEnergy params={params} token={token} contract={contract} />
+            <YourEnergy
+              params={params}
+              token={token}
+              contract={contract}
+              onCreateReport={getReport}
+            />
           </Box>
         </AccordionPanel>
       </Container>

@@ -23,13 +23,11 @@ const App = (props) => {
         <Router>
           <Switch>
             <Route exact path="/" render={loadPVAutoSize} />
-
             <Route path="/somsolet" render={loadSomSolet} />
             <Route
               path="/:language/collective-purchases/"
               render={loadSomSolet}
             />
-
             <Route path="/pvautosize" render={loadPVAutoSize} />
           </Switch>
         </Router>

@@ -69,26 +69,21 @@ const SomSolet = (props) => {
 
   useEffect(() => {
     setIsLoadingProject(true)
-    console.log('getProject')
     getProject({ dni: '', language: i18n.language }) // TODO: find vat from OV
       .then((response) => {
         const projectInfo = response[0] // TODO: to check
-        console.log('projectInfo', projectInfo)
         const projectDescription = projectInfo.description
         const project = getProjectList(projectDescription)
-        console.log('project', project)
         setProject(project.reverse())
         const stages = projectInfo.stages
         const phasesList = getPhasesList(stages)
         setStages(phasesList)
-        console.log('phasesList', phasesList)
         setCurrentPhase(projectDescription?.stageId)
         setActivePhase(projectDescription?.stageId)
-        console.log(projectDescription?.stageId)
         setIsLoadingProject(false)
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         setIsLoadingProject(false)
       })
   }, [])
@@ -102,7 +97,7 @@ const SomSolet = (props) => {
         setIsLoadingCampaign(false)
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         setIsLoadingCampaign(false)
       })
   }, [])
@@ -235,12 +230,11 @@ const SomSolet = (props) => {
 
   const handleSendContact = async (data) => {
     try {
-      console.log(data)
       setSending(true)
       await sendContact(data)
-    } catch (exception) {
+    } catch (error) {
       // report error
-      console.log(exception)
+      console.error(error)
     }
     setSending(false)
     setOpenContact(false)
@@ -248,12 +242,11 @@ const SomSolet = (props) => {
 
   const handleSendIncidence = async (data) => {
     try {
-      console.log(data)
       setSending(true)
       await sendIncidence(data)
-    } catch (exception) {
+    } catch (error) {
       // report error
-      console.log(exception)
+      console.error(error)
     }
     setSending(false)
     setOpenIncidence(false)

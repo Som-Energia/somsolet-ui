@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
-
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import Fab from '@material-ui/core/Fab'
@@ -22,31 +21,42 @@ mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const ZOOM_LEVEL = 18
 
-const RoofMap = ({ coordinates, callbackFn }) => {
+const RoofMap = ({ coordinates, updateParams }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const mapContainer = useRef()
-  const [edit] = useState(true)
 
+  const [edit] = useState(true)
   const [surfaceDraw, setSurfaceDraw] = useState(false)
   const [surface, setSurface] = useState(0)
   const [deleteDraw, setDeleteDraw] = useState()
   const [zoomLevel, setZoomLevel] = useState(ZOOM_LEVEL)
   const [center, setCenter] = useState(coordinates)
+  const [img, setImg] = useState(null)
+
+  const base = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static`
+  const size = '500x500@2x'
+  const token = `access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
 
   const handleDelete = () => {
     setSurfaceDraw(false)
     setSurface(0)
     setDeleteDraw(Math.random())
-    callbackFn({ surface: undefined })
+    updateParams({ surface: undefined })
   }
 
   useEffect(() => {
     if (surfaceDraw) {
-      callbackFn({ surface, center, zoomLevel })
+      updateParams({ surface, center, zoomLevel })
     }
   }, [surface, surfaceDraw])
+
+  useEffect(() => {
+    if (img) {
+      updateParams({ img })
+    }
+  }, [img])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -74,6 +84,12 @@ const RoofMap = ({ coordinates, callbackFn }) => {
       const data = draw.getAll()
       if (data.features.length > 0) {
         setSurfaceDraw(data)
+
+        setImg(
+          `${base}/geojson(${JSON.stringify(
+            data
+          )})/auto/${size}?${token}&attribution=false&logo=false`
+        )
       }
     }
 

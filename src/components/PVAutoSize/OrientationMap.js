@@ -1,43 +1,66 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
-
-import TextField from '@material-ui/core/TextField'
-import Slider from '@material-ui/core/Slider'
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker'
-// import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 import { bearingToCardinal } from 'services/pvautosize/utils'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import { useTranslation } from 'react-i18next'
 
 mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const ZOOM_LEVEL = 18
 
-const OrientationMap = (props) => {
+const OrientationMap = ({ updateParams, params }) => {
   const classes = useStyles()
-  // const { t } = useTranslation()
-  console.log(props)
-  const { coordinates, zoomLevel, callbackFn } = props
-
   const mapContainer = useRef()
+  const { t } = useTranslation()
 
-  const [orientation, setOrientation] = useState('0º N')
+  const {
+    center: coordinates,
+    zoomLevel,
+    installationParams,
+    hasTwoWaters,
+  } = params
+
+  const [azimuth, setAzimuth] = useState(null)
+  const [cardinal, setCardinal] = useState(null)
   const [rotation, setRotation] = useState(0)
+  const [values, setValues] = useState([])
 
   const getOrientationValue = (value) => {
-    const cardinal = bearingToCardinal(value)
+    setCardinal(bearingToCardinal(value))
     setRotation(value)
-    setOrientation(`${value}º ${cardinal}`)
+    setAzimuth(value)
     return value
   }
 
   useEffect(() => {
-    callbackFn({ orientation: orientation })
-  }, [orientation])
+    if (hasTwoWaters && azimuth) {
+      updateParams({
+        azimuth: installationParams.azimuth.find(
+          (a) => a[0] === azimuth && a.length === 2
+        ),
+      })
+    }
+  }, [hasTwoWaters])
+
+  useEffect(() => {
+    if (installationParams) {
+      setValues([...new Set(installationParams.azimuth.map((a) => a[0]))])
+    }
+  }, [installationParams])
+
+  useEffect(() => {
+    if (azimuth || cardinal) {
+      updateParams({ azimuth, orientation: `${azimuth}º ${cardinal}` })
+    }
+  }, [azimuth, cardinal])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -84,21 +107,25 @@ const OrientationMap = (props) => {
           </div>
         </div>
         <div className={classes.orientationParams}>
-          <SomSlider
-            defaultValue={0}
-            getAriaValueText={getOrientationValue}
-            aria-labelledby="orientation-slider"
-            step={10}
-            min={45}
-            max={315}
-          />
-          <TextField
+          <Select
+            id="azimuth"
+            fullWidth
+            required
             variant="outlined"
-            size="small"
-            disabled
-            className="orientationInputText"
-            value={orientation}
-          />
+            name="azimuth"
+            label={t('AZIMUTH')}
+            notched={false}
+            className={classes.select}
+            onChange={(e) => getOrientationValue(e.target.value)}
+          >
+            {values
+              ? values.map((i) => (
+                  <MenuItem value={i} key={i}>
+                    {`${i}º ${bearingToCardinal(i)}`}
+                  </MenuItem>
+                ))
+              : null}
+          </Select>
         </div>
       </div>
     </div>
@@ -106,35 +133,6 @@ const OrientationMap = (props) => {
 }
 
 export default OrientationMap
-
-const SomSlider = withStyles({
-  root: {
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus, &:hover, &$active': {
-      boxShadow: 'inherit',
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)',
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -180,22 +178,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   orientationParams: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-
     margin: '16px 8px',
-    padding: '0 0 0 24px',
+    overflow: 'hidden',
+    borderRadius: 4,
     backgroundColor: 'rgba(256, 256, 256, 0.7)',
-    '& .MuiSlider-root': {
-      root: { height: 8 },
-    },
-    '& .orientationInputText': {
-      marginLeft: '16px',
-      border: 0,
-      '& .MuiInputBase-root': {
-        backgroundColor: '#fff',
-      },
+  },
+  select: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '2px solid #9abd20 !important',
     },
   },
 }))
