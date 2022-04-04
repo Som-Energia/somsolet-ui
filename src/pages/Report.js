@@ -14,7 +14,7 @@ const Report = ({ data }) => {
   const { t } = useTranslation()
 
   return (
-    <div style={{ maxWidth: 1145, margin: '0 auto' }}>
+    <div style={{ width: 1145, margin: '0 auto' }}>
       <div style={{ backgroundColor: 'white', padding: 15, marginBottom: 20 }}>
         <Button onClick={handlePrint} style={{ backgroundColor: '#b9db42' }}>
           {t('IMPRIMIR')}
