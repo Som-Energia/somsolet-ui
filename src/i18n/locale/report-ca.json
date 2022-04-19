@@ -59,10 +59,10 @@
   "GENERACIO_DESCRIPTION": "Font PVGis Ubicació de referencia Generació estimada segons ubicació Afectació de la inclinació Afectació de la orientació",
   "GENERACIO_TEXT": "Cal tenir en compte que, tot i estar extretes de fons oficials, aquestes son dades estimades teòriques i per tant no sajustaran 100% a la realitat. També cal tenir en compte possibles ombres que en aquest estudi no shan tingut en compte i poden afectar de forma molt important els resultats.",
   "TITLE": "Dades de consum",
-  "DESCRIPTION": "Corbes de consum horari del periode dd-mm-aaaa al dd-mm-aaaaa extretes dels comptadors gestionats per lempresa de distribució elèctrica de la teva zona.",
+  "DESCRIPTION": "Corbes de consum extretes dels comptadors gestionats per lempresa de distribució elèctrica de la teva zona.",
   "TEXT": "Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en hores solars.",
   "ECONOMIQUES_TITLE": "Dades de economiques",
-  "ECONOMIQUES_DESCRIPTION": "Tarifes dús de lenergia de Som Energia actuals: P1: €/kWh P2: €/kWh P3: €/kWh Tarifa de compensació dexcedents €/kWh",
+  "ECONOMIQUES_DESCRIPTION": "Tarifes d’ús de l’energia de referència: P1: 0,245 €/kWh P2: 0,146 €/kWh P3: 0,101 €/kWh Tarifa de compensació d’excedents 0,066 €/kWh (impostos apart)",
   "PEU": "Per a qualsevol dubte pots escriure a auto@somenergia.coop",
   "ANY": "any",
   "ANYS": "anys"
