@@ -3,6 +3,7 @@
   "SELECT_ADDRESS": "Escull una adreça",
   "CONTINUE": "Continua",
   "ROOF_SURFACE": "Superfície de la teulada",
+  "ROOF_DESCRIPTION": " Selecciona amb el cursor la superfície útil de la teva teulada (exclou qualsevol zona orientada al nord, nord-est i nord-oest)",
   "ROOF_ORIENTATION": "Orientació de la teulada",
   "INSTALLATION_PARAMS": "Paràmetres de la instal·lació",
   "YOUR_ENERGY": "La teva energia",

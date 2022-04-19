@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import PlaceIcon from '@material-ui/icons/Place'
 
-import pvautosize from 'images/pvautosize.svg'
+import casa from 'images/casa.png'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
@@ -43,7 +43,7 @@ const AddressSelector = ({ contracts, getContract }) => {
     <>
       <Container maxWidth="sm">
         <div className={classes.imageWrapper}>
-          <img alt="pvcalculator-logo" src={pvautosize} />
+          <img alt="pvcalculator-logo" src={casa} width="150" />
         </div>
         <Typography component="h3" className={classes.claim}>
           {t('PV_AUTOSIZE_CLAIM')}
