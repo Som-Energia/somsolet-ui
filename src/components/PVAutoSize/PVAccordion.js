@@ -46,6 +46,10 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
     setExpanded(expanded - 1)
   }
 
+  const handleClickTab = (value) => {
+    setExpanded(value)
+  }
+
   useEffect(() => {
     if (expanded === 1) {
       const isValid = params?.surface !== undefined
@@ -99,6 +103,9 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
           onChange={handleChange}
           icon={<MapIcon color="primary" />}
           title={t('ROOF_SURFACE')}
+          description={t('ROOF_DESCRIPTION')}
+          disabled={false}
+          onClickTab={handleClickTab}
         >
           <RoofMap coordinates={coordinates} updateParams={updateParams} />
         </AccordionPanel>
@@ -109,6 +116,8 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
           onChange={handleChange}
           icon={<ExploreOutlinedIcon color="primary" />}
           title={t('ROOF_ORIENTATION')}
+          disabled={params?.surface === undefined}
+          onClickTab={handleClickTab}
         >
           <OrientationMap updateParams={updateParams} params={params} />
         </AccordionPanel>
@@ -119,6 +128,8 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
           onChange={handleChange}
           icon={<InputOutlinedIcon color="primary" />}
           title={t('INSTALLATION_PARAMS')}
+          disabled={params?.azimuth === undefined}
+          onClickTab={handleClickTab}
         >
           <Box px={2} py={1}>
             <Installation
@@ -136,6 +147,8 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
           onChange={handleChange}
           icon={<FlashIcon color="primary" />}
           title={t('YOUR_ENERGY')}
+          disabled={params?.tilt === '' && params?.hasTwoWatters === ''}
+          onClickTab={handleClickTab}
         >
           <Box px={3} py={2} style={{ width: '100%' }}>
             <YourEnergy
