@@ -28,7 +28,7 @@ const App = (props) => {
               path="/:language/collective-purchases/"
               render={loadSomSolet}
             />
-            <Route path="/pvautosize" render={loadPVAutoSize} />
+            <Route path="/:language/pvautosize" render={loadPVAutoSize} />
           </Switch>
         </Router>
       </Suspense>
