@@ -34,6 +34,7 @@ jq -r '.entrypoints[]' ${BUILD}/asset-manifest.json | while read file; do
     echo -e ${GREEN}✔︎${NC} ${file} → ${dest}
     mv ${TARGET}/${file} ${TARGET}/${dest}
     mv ${TARGET}/${file}.map ${TARGET}/${dest}.map
+    continue
   fi
 
   # yarn build format
@@ -43,6 +44,7 @@ jq -r '.entrypoints[]' ${BUILD}/asset-manifest.json | while read file; do
     echo -e ${GREEN}✔︎${NC} ${file} → ${dest}
     mv ${TARGET}/${file} ${TARGET}/${dest}
     mv ${TARGET}/${file}.map ${TARGET}/${dest}.map
+    continue
   fi
   
   if [[ $file =~ ^static/(js|css)/main\.[A-Za-z0-9]*\.chunk.(js|css)$ ]]; then
@@ -50,6 +52,7 @@ jq -r '.entrypoints[]' ${BUILD}/asset-manifest.json | while read file; do
     echo -e ${GREEN}✔︎${NC} ${file} → ${dest}
     mv ${TARGET}/${file} ${TARGET}/${dest}
     mv ${TARGET}/${file}.map ${TARGET}/${dest}.map
+    continue
   fi
 
   if [[ $file =~ ^static/(js|css)/[0-9]{1,2}\.[A-Za-z0-9]*\.chunk.js$ ]]; then
@@ -58,5 +61,7 @@ jq -r '.entrypoints[]' ${BUILD}/asset-manifest.json | while read file; do
     mv ${TARGET}/${file} ${TARGET}/${dest}
     mv ${TARGET}/${file}.LICENSE.txt ${TARGET}/${dest}.LICENSE.txt
     mv ${TARGET}/${file}.map ${TARGET}/${dest}.map
+    continue
   fi
+  die "Entry point not renamed: ${file}"
 done
