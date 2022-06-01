@@ -2,6 +2,7 @@
 
 GREEN='\033[0;32m' # Green
 BLUE='\033[0;34m' # Blue
+RED='\033[1;31m' # Red
 NC='\033[0m' # No Color
 die() {
 	echo -e $RED"$*"$NC >&2
@@ -13,18 +14,20 @@ step() {
 
 REPOPATH=$(dirname $0)/..
 BUILD=${REPOPATH}/build
-TARGET=${REPOPATH}/../oficinavirtual/src/front/static/somsolet
+OVDIR=${1:-${REPOPATH}/../oficinavirtual}
+TARGET=${OVDIR}/src/front/static/somsolet
 
-[ -d $(dirname $TARGET) ] || die "Target directory $(dirname $TARGET) should exist"
+[ -d "$OVDIR" ] || die "Django repository '$OVDIR' does not exist, provide it as first parameter"
+[ -d "$(dirname $TARGET)" ] || die "Target directory $(dirname $TARGET) does not exist. Maybe the oficinavirtual repo is not at '$OVDIR' as expected"
 
 step "Removing existing $TARGET"
 rm -rf "${TARGET}"
 mkdir "${TARGET}"
+
 step "Copying resources to $TARGET"
 cp -r "${BUILD}/static" "$TARGET"
 
 step "Renaming resources in $TARGET"
-
 jq -r '.entrypoints[]' ${BUILD}/asset-manifest.json | while read file; do
   if [[ $file =~ ^static/(js|css)/main\.[A-Za-z0-9]*.(js|css)$ ]]; then
     dest=$(echo ${file} | sed 's/main\.[A-Za-z0-9]*\./main./g')
