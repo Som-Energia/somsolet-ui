@@ -1,8 +1,7 @@
 import axios from 'axios'
-// const { HEMAN_API_URL } = window.config
 // https://api.mapbox.com/geocoding/v5/mapbox.places/515%2015th%20St%20NW%2C%20Washington%2C%20DC%2020004.json?types=address&access_token=YOUR_MAPBOX_ACCESS_TOKEN
 
-const API_BASE = 'https://heman-demo.somenergia.lan/api'
+const API_BASE = process.env.REACT_APP_HEMAN_API_URL
 
 export const geocodeAddress = async (address) => {
   const encodedAddress = encodeURI(address)
@@ -11,7 +10,6 @@ export const geocodeAddress = async (address) => {
 }
 
 export const getPVScenario = async (params) => {
-  // https://heman-demo.somenergia.lan/api/ScenarioReport/0065020?tilt=30.0&azimuth=180%230
 
   const { contract, token, installationParams } = params
 
@@ -35,7 +33,7 @@ export const getPVScenario = async (params) => {
 }
 
 export const getContractParams = async ({ token, contract }) => {
-  const url = `https://heman-demo.somenergia.lan/api/ScenarioParams/${contract}`
+  const url = `${API_BASE}/ScenarioParams/${contract}`
 
   const headers = {
     Authorization: `token ${token}`,
@@ -56,7 +54,7 @@ export const getReport = async ({ token, contract, azimuth, ...params }) => {
     ? `?azimuth=${azimuth[0]}&azimuth=${azimuth[1]}`
     : `?azimuth=${azimuth}`
 
-  const url = `https://heman-demo.somenergia.lan/api/ScenarioReport/${contract}${customAzimuth}`
+  const url = `${API_BASE}/ScenarioReport/${contract}${customAzimuth}`
 
   const headers = {
     Authorization: `token ${token}`,
