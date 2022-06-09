@@ -36,7 +36,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
         <h2 style={styles.title}>{t('DADES_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('DADES_NOM')}: <strong>-</strong>
+            {t('DADES_NOM')}: <strong>{data.contract.owner_name}</strong>
           </li>
           <li style={styles.listitem}>
             {t('DADES_DIRECCIO')}:{' '}
