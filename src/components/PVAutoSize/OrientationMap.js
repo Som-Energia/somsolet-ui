@@ -87,7 +87,7 @@ const OrientationMap = ({ updateParams, params }) => {
             <div className="cardinal">O</div>
             <svg
               fill="none"
-              style={{ webkitTransform: `rotate(${rotation}deg)` }}
+              style={{ WebkitTransform: `rotate(${rotation}deg)` }}
               stroke="#7da101"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
