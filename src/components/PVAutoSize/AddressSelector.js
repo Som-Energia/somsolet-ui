@@ -19,7 +19,7 @@ import casa from 'images/casa.png'
 
 import { geocodeAddress } from 'services/pvautosize/api'
 
-const AddressSelector = ({ contracts, getContract }) => {
+const AddressSelector = ({ contracts, onContractChanged }) => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [contract, setContract] = useState({})
@@ -35,7 +35,7 @@ const AddressSelector = ({ contracts, getContract }) => {
     setLoading(true)
     const data = await geocodeAddress(contract?.address)
     const geocodedAddress = data?.features?.[0]
-    getContract && getContract({ ...contract, address: geocodedAddress })
+    onContractChanged && onContractChanged({ ...contract, address: geocodedAddress })
     setLoading(false)
   }
 

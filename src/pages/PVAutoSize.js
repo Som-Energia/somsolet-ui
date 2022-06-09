@@ -32,7 +32,7 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
         {!contract?.address ? (
           <AddressSelector
             contracts={contractsList}
-            getContract={setContract}
+            onContractChanged={setContract}
           />
         ) : report ? (
           <Report data={{ ...report, contract }} />
