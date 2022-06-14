@@ -67,10 +67,17 @@ export const PDF = React.forwardRef(({ data }, ref) => {
         <h2 style={styles.title}> {t('US_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
-            {t('US_POTENCIA')}: <strong>-</strong>
+            {t('US_POTENCIA')}:{' '}
+            <div style={styles.listpowers}>
+              {data.contract.powers.map((value, index) => (
+                  <span key={index}>
+                      {'P'+(index + 1)}: <strong>{formatNumber(value)}kW</strong>
+                  </span>
+              ))}
+            </div>
           </li>
           <li style={styles.listitem}>
-            {t('US_TARIFA')}: <strong>-</strong>
+            {t('US_TARIFA')}: <strong>{data.contract.tariff}</strong>
           </li>
           <li style={styles.listitem}>
             {t('US_ANUAL')}:{' '}
