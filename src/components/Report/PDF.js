@@ -16,7 +16,7 @@ export const PDF = React.forwardRef(({ data }, ref) => {
   const { t } = useTranslation()
 
   const formatNumber = (number) =>
-    number ? new Intl.NumberFormat('de-DE').format(number.toFixed(2)) : '-'
+    number ? new Intl.NumberFormat('de-DE').format(Number(number).toFixed(2)) : '-'
 
   return (
     <div style={styles.page} ref={ref}>
