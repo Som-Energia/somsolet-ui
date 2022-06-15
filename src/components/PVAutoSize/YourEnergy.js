@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 
-import { getReport } from '../../services/pvautosize/api'
+import { retrieveScenario } from '../../services/pvautosize/api'
 import InputLabel from '@material-ui/core/InputLabel'
 import Loading from 'components/Loading'
 
@@ -37,10 +37,10 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   useEffect(() => {
     if (contract && tilt && azimuth && token) {
       setIsLoading(true)
-      getReport({ token, contract, tilt, power, azimuth })
-        .then((rsp) => {
-          setScenario(rsp)
-          !power && setPeakPowerKw(rsp.peakPowerKw)
+      retrieveScenario({ token, contract, tilt, power, azimuth })
+        .then((response) => {
+          setScenario(response)
+          !power && setPeakPowerKw(response.peakPowerKw)
           setIsLoading(false)
         })
         .catch((error) => {

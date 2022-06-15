@@ -49,7 +49,7 @@ export const getContractParams = async ({ token, contract }) => {
   })
 }
 
-export const getReport = async ({ token, contract, azimuth, ...params }) => {
+export const retrieveScenario = async ({ token, contract, azimuth, ...params }) => {
   const customAzimuth = Array.isArray(azimuth)
     ? `?azimuth=${azimuth[0]}&azimuth=${azimuth[1]}`
     : `?azimuth=${azimuth}`
