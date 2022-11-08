@@ -6,14 +6,13 @@ import { useTranslation } from 'react-i18next'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AddressSelector from 'components/PVAutoSize/AddressSelector'
 import PVAccordion from 'components/PVAutoSize/PVAccordion'
-import Report from './Report'
 
 const PVAutoSize = ({ contracts, token, ...props }) => {
   const classes = useStyles()
   const { i18n } = useTranslation()
 
   const [contract, setContract] = useState()
-  const [report, setReport] = useState()
+  /* const [report, setReport] = useState() */
 
   const contractsList =
     typeof contracts === 'string' && contracts !== ''
@@ -34,14 +33,12 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
             contracts={contractsList}
             onContractChanged={setContract}
           />
-        ) : report ? (
-          <Report data={{ ...report, contract }} />
         ) : (
           <PVAccordion
             coordinates={contract?.address?.center}
             contract={contract?.name}
             token={token}
-            getReport={setReport}
+            /* getReport={setReport} */
           />
         )}
       </div>

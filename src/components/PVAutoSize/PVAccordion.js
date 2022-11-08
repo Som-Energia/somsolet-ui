@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -20,6 +20,7 @@ import OrientationMap from 'components/PVAutoSize/OrientationMap'
 import Installation from 'components/PVAutoSize/Installation'
 import YourEnergy from 'components/PVAutoSize/YourEnergy'
 import Loading from 'components/Loading'
+import { ReportContext } from 'contexts/ReportContext'
 
 import AccordionPanel from './AccordionPanel'
 
@@ -32,6 +33,7 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
   const [completed, setCompleted] = useState(false)
+  const data = useContext(ReportContext)
 
   const handleChange = (panel) => {
     // const isExpanded = panel === expanded
@@ -89,6 +91,8 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
   const updateParams = (newParams) => {
     setParams({ ...params, ...newParams })
   }
+
+  console.log("CONTEXT", data)
 
   return isLoading ? (
     <Loading />
@@ -155,7 +159,7 @@ const PVAccordion = ({ coordinates, token, contract, getReport }) => {
               params={params}
               token={token}
               contract={contract}
-              onCreateReport={getReport}
+              /* onCreateReport={getReport} */
             />
           </Box>
         </AccordionPanel>

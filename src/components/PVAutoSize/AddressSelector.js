@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
@@ -18,12 +18,14 @@ import PlaceIcon from '@material-ui/icons/Place'
 import casa from 'images/casa.png'
 
 import { geocodeAddress } from 'services/pvautosize/api'
+import { ReportDispatch,SET_CONTRACT } from 'contexts/ReportContext'
 
 const AddressSelector = ({ contracts, onContractChanged }) => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [contract, setContract] = useState({})
   const [loading, setLoading] = useState(false)
+  const {reportDispatch} = useContext(ReportDispatch)
 
   const handleChange = (event) => {
     const contract = contracts.find((item) => item.name === event.target.value)
@@ -36,6 +38,7 @@ const AddressSelector = ({ contracts, onContractChanged }) => {
     const data = await geocodeAddress(contract?.address)
     const geocodedAddress = data?.features?.[0]
     onContractChanged && onContractChanged({ ...contract, address: geocodedAddress })
+    reportDispatch({type:SET_CONTRACT, contract:{ ...contract, address: geocodedAddress }})
     setLoading(false)
   }
 

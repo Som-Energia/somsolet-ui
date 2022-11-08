@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
-import Button from '@material-ui/core/Button'
+/* import Button from '@material-ui/core/Button' */
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
 
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
+/* import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined' */
 
 import { retrieveScenario } from '../../services/pvautosize/api'
 import InputLabel from '@material-ui/core/InputLabel'
 import Loading from 'components/Loading'
+import { ReportDispatch, SET_REPORT } from 'contexts/ReportContext'
+import {Link} from 'react-router-dom'
 
 const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   const classes = useStyles()
@@ -23,6 +25,7 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   const [scenario, setScenario] = useState()
   const [power, setPower] = useState()
   const [peakPowerKw, setPeakPowerKw] = useState()
+  const { reportDispatch } = useContext(ReportDispatch) 
 
   const { tilt, azimuth } = params
 
@@ -32,7 +35,10 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
     }).format(scenario?.[attribute] || '0')
   }
 
-  const handleClick = () => onCreateReport({ scenario, params })
+  const handleClick = () => {
+    reportDispatch({ type: SET_REPORT, data: { scenario: scenario, params: params } })
+    /* onCreateReport({ scenario, params }) */
+  }
 
   useEffect(() => {
     if (contract && tilt && azimuth && token) {
@@ -124,7 +130,7 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
             <span>{niceFloat('paybackYears', 1)}</span>
             &nbsp;{t('YEARS')}
           </div>
-          <Button
+          {/* <Button
             fullWidth
             color="primary"
             size="large"
@@ -135,7 +141,8 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
             onClick={handleClick}
           >
             {t('SEE_REPORT')}
-          </Button>
+          </Button> */}
+          <Link to='/report' target='_blank' onClick={handleClick} >{t('SEE_REPORT')}</Link>
         </div>
       ) : null}
     </>

@@ -1,5 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import ReportContextProvider from 'contexts/ReportContext'
+import Report from './pages/Report'
 
 import Loading from './components/Loading'
 
@@ -17,21 +19,31 @@ const App = (props) => {
     return <PVAutoSize {...props} />
   }
 
+  /* const loadReport = () => {
+    const Report = lazy(() => import('./pages/Report'))
+    return <Report {...props} />
+  } */
+
   return (
     <>
-      <Suspense fallback={<Loading />}>
-        <Router>
-          <Switch>
-            <Route exact path="/" render={loadPVAutoSize} />
-            <Route path="/somsolet" render={loadSomSolet} />
-            <Route
-              path="/:language/collective-purchases/"
-              render={loadSomSolet}
-            />
-            <Route path="/:language/pvautosize" render={loadPVAutoSize} />
-          </Switch>
-        </Router>
-      </Suspense>
+      <ReportContextProvider>
+        <Suspense fallback={<Loading />}>
+          <Router>
+            <Switch>
+              <Route exact path="/" render={loadPVAutoSize} />
+              <Route path="/somsolet" render={loadSomSolet} />
+              <Route
+                path="/:language/collective-purchases/"
+                render={loadSomSolet}
+              />
+              <Route path="/:language/pvautosize" render={loadPVAutoSize} />
+              <Route path="/report">
+                <Report />
+              </Route>
+            </Switch>
+          </Router>
+        </Suspense>
+      </ReportContextProvider>
     </>
   )
 }
