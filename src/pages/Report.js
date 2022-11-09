@@ -1,20 +1,18 @@
 import React, { useContext, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
-/* import { PDF } from '../components/Report/PDF' */
+import { PDF } from '../components/Report/PDF'
 import Button from '@material-ui/core/Button'
 import { useTranslation } from 'react-i18next'
-import { ReportContext } from 'contexts/ReportContext'
+import {ReportContext} from 'contexts/ReportContext'
 
 const Report = () => {
-  console.log("HOLAAAAAA")
   const componentRef = useRef()
-  const data = useContext(ReportContext)
+  const {report,loadData} = useContext(ReportContext)
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   })
 
-  console.log(data)
   const { t } = useTranslation()
   return (
     <div style={{ width: 1145, margin: '0 auto' }}>
@@ -23,7 +21,7 @@ const Report = () => {
           {t('IMPRIMIR')}
         </Button>
       </div>
-      {/* <PDF data={data} ref={componentRef} /> */}
+      {loadData ? <PDF data={report} ref={componentRef} /> : null }
     </div>
   )
 }

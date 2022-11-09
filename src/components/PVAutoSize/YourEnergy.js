@@ -12,10 +12,13 @@ import Typography from '@material-ui/core/Typography'
 import { retrieveScenario } from '../../services/pvautosize/api'
 import InputLabel from '@material-ui/core/InputLabel'
 import Loading from 'components/Loading'
-import { ReportDispatch, SET_REPORT } from 'contexts/ReportContext'
-import {Link} from 'react-router-dom'
+import {
+  ReportDispatch,
+  SET_REPORT,
+} from 'contexts/ReportContext'
+import { Link } from 'react-router-dom'
 
-const YourEnergy = ({ params, token, contract, onCreateReport }) => {
+const YourEnergy = ({ params, token, contract }) => {
   const classes = useStyles()
 
   const { t } = useTranslation()
@@ -25,7 +28,7 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   const [scenario, setScenario] = useState()
   const [power, setPower] = useState()
   const [peakPowerKw, setPeakPowerKw] = useState()
-  const { reportDispatch } = useContext(ReportDispatch) 
+  const { reportDispatch } = useContext(ReportDispatch)
 
   const { tilt, azimuth } = params
 
@@ -36,8 +39,10 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
   }
 
   const handleClick = () => {
-    reportDispatch({ type: SET_REPORT, data: { scenario: scenario, params: params } })
-    /* onCreateReport({ scenario, params }) */
+    reportDispatch({
+      type: SET_REPORT,
+      data: { scenario: scenario, params: params },
+    })
   }
 
   useEffect(() => {
@@ -130,19 +135,13 @@ const YourEnergy = ({ params, token, contract, onCreateReport }) => {
             <span>{niceFloat('paybackYears', 1)}</span>
             &nbsp;{t('YEARS')}
           </div>
-          {/* <Button
-            fullWidth
-            color="primary"
-            size="large"
-            disableElevation
-            variant="contained"
-            className={classes.button}
-            startIcon={<DescriptionOutlinedIcon />}
+          <Link
+            to={'/report'}
+            target="_blank"
             onClick={handleClick}
           >
             {t('SEE_REPORT')}
-          </Button> */}
-          <Link to='/report' target='_blank' onClick={handleClick} >{t('SEE_REPORT')}</Link>
+          </Link>
         </div>
       ) : null}
     </>

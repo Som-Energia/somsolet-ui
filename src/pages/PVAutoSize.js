@@ -12,7 +12,6 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
   const { i18n } = useTranslation()
 
   const [contract, setContract] = useState()
-  /* const [report, setReport] = useState() */
 
   const contractsList =
     typeof contracts === 'string' && contracts !== ''
@@ -20,6 +19,7 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
       : []
 
   useEffect(() => {
+    localStorage.removeItem('REPORT')
     const language = props?.match?.params?.language
     language && i18n.changeLanguage(language)
   }, [props?.match?.params?.language, i18n])
@@ -38,7 +38,6 @@ const PVAutoSize = ({ contracts, token, ...props }) => {
             coordinates={contract?.address?.center}
             contract={contract?.name}
             token={token}
-            /* getReport={setReport} */
           />
         )}
       </div>

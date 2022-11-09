@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next'
 // eslint-disable-next-line react/display-name
 export const PDF = React.forwardRef(({ data }, ref) => {
   const { t } = useTranslation()
-
   const formatNumber = (number) =>
     number ? new Intl.NumberFormat('de-DE').format(Number(number).toFixed(2)) : '-'
 
@@ -68,13 +67,13 @@ export const PDF = React.forwardRef(({ data }, ref) => {
         <ul style={styles.list}>
           <li style={styles.listitem}>
             {t('US_POTENCIA')}:{' '}
-            <div style={styles.listpowers}>
+           {/*  <div style={styles.listpowers}>
               {data.contract.powers.map((value, index) => (
                   <span key={index}>
                       {'P'+(index + 1)}: <strong>{formatNumber(value)}kW</strong>
                   </span>
               ))}
-            </div>
+            </div> */}
           </li>
           <li style={styles.listitem}>
             {t('US_TARIFA')}: <strong>{data.contract.tariff}</strong>
