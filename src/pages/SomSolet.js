@@ -9,6 +9,9 @@ import { useTranslation } from 'react-i18next'
 
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
+import SpeedDial from '@material-ui/lab/SpeedDial'
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
@@ -50,7 +53,7 @@ const SomSolet = (props) => {
   const [isLoadingCampaign, setIsLoadingCampaign] = useState(true)
   const [project, setProject] = useState([])
   const [isLoadingProject, setIsLoadingProject] = useState(true)
-  const [activeOption, setActiveOption] = useState(0)
+  const [activeOption, setActiveOption] = useState(1)
   const [activePhase, setActivePhase] = useState(0)
   const [currentPhase, setCurrentPhase] = useState('preinforme')
   const [prevPhase, setPrevPhase] = useState('prereport')
@@ -58,6 +61,7 @@ const SomSolet = (props) => {
 
   const [openContact, setOpenContact] = useState(false)
   const [openIncidence, setOpenIncidence] = useState(false)
+  const [open, setOpen] = React.useState(false)
   const [isSending, setSending] = useState(false)
 
   let afterCurrent = false
@@ -142,7 +146,7 @@ const SomSolet = (props) => {
         title: title,
         content: content,
       }
-      project.push(info)
+      info.title && info.content && project.push(info)
     })
     return project
   }
@@ -152,7 +156,7 @@ const SomSolet = (props) => {
     switch (key) {
       case 'supplyPoint':
         return 'Punt de Subministrament'
-      case 'project':
+      case 'projectId':
         return 'Projecte'
       case 'registeredPerson':
         return 'Persona inscrita'
@@ -169,7 +173,7 @@ const SomSolet = (props) => {
     switch (key) {
       case 'supplyPoint':
         return <SupplyPoint supplyPointInfo={value} />
-      case 'project':
+      case 'projectId':
         return <Project projectInfo={value} />
       case 'registeredPerson':
         return <RegisteredPerson registeredPersonInfo={value} />
@@ -195,7 +199,7 @@ const SomSolet = (props) => {
       case 'offer':
         return "Proposta d'oferta final"
       case 'offer_accepted':
-        return "Oferta acceptada"
+        return 'Oferta acceptada'
       case 'constructionPermit':
         return "Permís d'obra"
       case 'installation':
@@ -256,6 +260,31 @@ const SomSolet = (props) => {
     setOpenIncidence(false)
   }
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const actions = [
+    {
+      name: t('CONTACT_INSTALL'),
+      icon: <MailOutlinedIcon fontSize="small" />,
+      click: () => setOpenContact(true),
+    },
+    {
+      name: t('NOTIFY_INCIDENCE'),
+      icon: <ReportProblemOutlinedIcon fontSize="small" />,
+      click: () => setOpenIncidence(true),
+    },
+    {
+      name: t('UNSUBSCRIBE'),
+      icon: <PowerSettingsNewOutlinedIcon fontSize="small" />,
+    },
+  ]
+
   return isLoadingCampaign || isLoadingProject ? (
     <Loading />
   ) : (
@@ -274,71 +303,7 @@ const SomSolet = (props) => {
             </Grid>
           ) : (
             <>
-              <Grid item sm={3} xs={12}>
-                <div className={clsx(classes.column, classes.fullHeight)}>
-                  {project.map(({ title, content }, index) => (
-                    <div key={`${index}-${title}`}>
-                      <div
-                        key={`${index}-${title}`}
-                        className={clsx(
-                          classes.option,
-                          activeOption === index && classes.activeOption
-                        )}
-                        onClick={() => {
-                          activeOption === index
-                            ? setActiveOption(false)
-                            : setActiveOption(index)
-                        }}
-                      >
-                        {activeOption === index ? (
-                          <ArrowDropDownIcon fontSize="small" />
-                        ) : (
-                          <ArrowRightIcon fontSize="small" />
-                        )}
-                        &nbsp;{title}
-                      </div>
-                      {activeOption === index && (
-                        <div className={classes.optionContent}>{content}</div>
-                      )}
-                    </div>
-                  ))}
-                  <div className={classes.separator}> </div>
-
-                  <div
-                    role="button"
-                    className={classes.option}
-                    onClick={() => setOpenContact(true)}
-                  >
-                    <div className={classes.phaseIcon}>
-                      <MailOutlinedIcon fontSize="small" />
-                    </div>
-                    <div className={classes.phaseName}>
-                      {t('CONTACT_INSTALL')}
-                    </div>
-                  </div>
-
-                  <div
-                    role="button"
-                    className={classes.option}
-                    onClick={() => setOpenIncidence(true)}
-                  >
-                    <div className={classes.phaseIcon}>
-                      <ReportProblemOutlinedIcon fontSize="small" />
-                    </div>
-                    <div className={classes.phaseName}>
-                      {t('NOTIFY_INCIDENCE')}
-                    </div>
-                  </div>
-
-                  <div className={classes.option}>
-                    <div className={classes.phaseIcon}>
-                      <PowerSettingsNewOutlinedIcon fontSize="small" />
-                    </div>
-                    <div className={classes.phaseName}>{t('UNSUBSCRIBE')}</div>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item sm={6} xs={12}>
+              <Grid item sm={12} xs={12}>
                 <div className="">
                   <div className={clsx(classes.column, classes.mainHeader)}>
                     <h2> {campaign.name} </h2>
@@ -381,65 +346,144 @@ const SomSolet = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className={clsx(classes.column, classes.main)}>
-                    <div>
-                      {prevPhase && (
-                        <div
-                          className={classes.phaseTitle}
-                          onClick={(event) => setActivePhase(prevPhase)}
-                        >
-                          {getPhase(stages, prevPhase)}
-                          <UndoOutlinedIcon />
-                        </div>
+                </div>
+              </Grid>
+              <Grid item sm={12} xs={12}>
+                <div className={clsx(classes.column, classes.fullHeight)}>
+                  <div>
+                    <div
+                      className={clsx(
+                        classes.option,
+                        activeOption === 0 && classes.activeOption
                       )}
-
-                      <div className={classes.mainPhase}>
-                        {getPhase(stages, activePhase, true)}
-                      </div>
+                      onClick={() => {
+                        activeOption === 0
+                          ? setActiveOption(false)
+                          : setActiveOption(0)
+                      }}
+                    >
+                      {activeOption === 0 ? (
+                        <ArrowDropDownIcon fontSize="small" />
+                      ) : (
+                        <ArrowRightIcon fontSize="small" />
+                      )}
+                      &nbsp;{'INFO GENERAL'}
                     </div>
-                    {nextPhase && (
+                    {activeOption === 0 && (
                       <div
-                        className={classes.phaseTitle}
-                        onClick={() =>
-                          currentPhase === activePhase
-                            ? ''
-                            : setActivePhase(nextPhase)
-                        }
+                        className={clsx(
+                          classes.optionContent,
+                          classes.generalInfo
+                        )}
                       >
-                        {getPhase(stages, nextPhase)}
-                        <RedoOutlinedIcon />
+                        {project.map(({ title, content }, index) => (
+                          <div key={index}>
+                            <b key={index}>{title}</b>
+                            <div key={index}>{content}</div>
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
-                </div>
-              </Grid>
-              <Grid item sm={3} xs={12}>
-                <div className={classes.column}>
-                  {stages &&
-                    stages.map(({ id, title }) => {
-                      const isClickable = !afterCurrent
-                      afterCurrent = afterCurrent || currentPhase === id
-                      return (
-                        <div
-                          key={id}
-                          className={clsx(
-                            classes.phase,
-                            afterCurrent && classes.futurePhase,
-                            currentPhase === id && classes.currentPhase
-                          )}
-                          onClick={() => isClickable && setActivePhase(id)}
-                        >
-                          <div className={classes.phaseIcon}>
-                            {afterCurrent ? (
-                              <CheckBoxOutlineBlankOutlinedIcon />
-                            ) : (
-                              <CheckBoxOutlinedIcon />
-                            )}
-                          </div>
-                          <div className={classes.phaseName}>{title}</div>
+                  <div className={classes.separator}> </div>
+                  <div>
+                    <div
+                      className={clsx(
+                        classes.option,
+                        activeOption === 1 && classes.activeOption
+                      )}
+                      onClick={() => {
+                        activeOption === 1
+                          ? setActiveOption(false)
+                          : setActiveOption(1)
+                      }}
+                    >
+                      {activeOption === 1 ? (
+                        <ArrowDropDownIcon fontSize="small" />
+                      ) : (
+                        <ArrowRightIcon fontSize="small" />
+                      )}
+                      &nbsp;{'PROCES'}
+                    </div>
+                    {activeOption === 1 && (
+                      <div className={classes.optionContent}>
+                        <div className={clsx(classes.column, classes.main)}>
+                          <>
+                            <Grid item sm={9} xs={12}>
+                              <div className={classes.column}>
+                                {prevPhase && (
+                                  <div
+                                    className={classes.phaseTitle}
+                                    onClick={(event) =>
+                                      setActivePhase(prevPhase)
+                                    }
+                                  >
+                                    {getPhase(stages, prevPhase)}
+                                    <UndoOutlinedIcon />
+                                  </div>
+                                )}
+
+                                <div className={classes.mainPhase}>
+                                  {getPhase(stages, activePhase, true)}
+                                </div>
+                              </div>
+                              <div className={classes.column}>
+                                {nextPhase && (
+                                  <div
+                                    className={classes.phaseTitle}
+                                    onClick={() =>
+                                      currentPhase === activePhase
+                                        ? ''
+                                        : setActivePhase(nextPhase)
+                                    }
+                                  >
+                                    {getPhase(stages, nextPhase)}
+                                    <RedoOutlinedIcon />
+                                  </div>
+                                )}
+                              </div>
+                            </Grid>
+                            <Grid item sm={3} xs={12}>
+                              <div className={classes.column}>
+                                {stages &&
+                                  stages.map(({ id, title }) => {
+                                    const isClickable = !afterCurrent
+                                    afterCurrent =
+                                      afterCurrent || currentPhase === id
+                                    return (
+                                      <div
+                                        key={id}
+                                        className={clsx(
+                                          classes.phase,
+                                          afterCurrent && classes.futurePhase,
+                                          currentPhase === id &&
+                                            classes.currentPhase
+                                        )}
+                                        onClick={() =>
+                                          isClickable && setActivePhase(id)
+                                        }
+                                      >
+                                        <div className={classes.phaseIcon}>
+                                          {afterCurrent ? (
+                                            <CheckBoxOutlineBlankOutlinedIcon />
+                                          ) : (
+                                            <CheckBoxOutlinedIcon />
+                                          )}
+                                        </div>
+                                        <div className={classes.phaseName}>
+                                          {title}
+                                        </div>
+                                      </div>
+                                    )
+                                  })}
+                              </div>
+                            </Grid>
+                          </>
                         </div>
-                      )
-                    })}
+                      </div>
+                    )}
+                  </div>
+                  <div className={classes.separator}> </div>
                 </div>
               </Grid>
             </>
@@ -458,6 +502,23 @@ const SomSolet = (props) => {
           handleSend={handleSendIncidence}
         />
       </Container>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        className={classes.speedDial}
+        icon={<SpeedDialIcon />}
+        open={open}
+        onClose={handleClose}
+        onOpen={handleOpen}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={action?.click}
+          />
+        ))}
+      </SpeedDial>
     </ThemeProvider>
   )
 }
@@ -479,7 +540,6 @@ const useStyles = makeStyles((theme) => ({
   fullHeight: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 'calc(100vh - 34px)',
   },
   option: {
     display: 'flex',
@@ -517,7 +577,7 @@ const useStyles = makeStyles((theme) => ({
   mainHeader: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'baseline',
     flexWrap: 'wrap',
     '& h2': {
       fontSize: '32px',
@@ -546,7 +606,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: '16px',
     minHeight: '620px',
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   phase: {
@@ -626,5 +685,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '24px',
+  },
+  buttons: {
+    padding: '1rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  generalInfo: {
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
+  speedDial: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }))

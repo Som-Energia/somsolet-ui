@@ -15,7 +15,6 @@ const getToken = async () => {
       password: REACT_APP_SOMSOLET_API_PASSWORD,
     },
   }).then((response) => {
-    console.log('RESPONSE TOKEN:', response?.data?.access)
     return response?.data?.access
   })
 }
