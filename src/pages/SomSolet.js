@@ -117,7 +117,7 @@ const SomSolet = (props) => {
 
   const getPhasesList = (stages) => {
     const phasesist = []
-    Object.entries(stages).foreach(([key, value], index) => {
+    Object.entries(stages).forEach(([key, value], index) => {
       if (key !== 'stageId' && key !== 'discardedType') {
         const title = getPhaseTitle(key)
         const content = getPhaseContent(key, value)
@@ -134,7 +134,7 @@ const SomSolet = (props) => {
 
   const getProjectList = (projectDescription) => {
     const project = []
-    Object.entries(projectDescription).foreach(([key, value]) => {
+    Object.entries(projectDescription).forEach(([key, value]) => {
       const content = getOptionContent(key, value)
       const title = getOptionTitle(key)
       const info = {
@@ -184,14 +184,18 @@ const SomSolet = (props) => {
 
   const getPhaseTitle = (key) => {
     switch (key) {
+      case 'registered':
+        return 'Registre'
       case 'prereport':
         return 'Preinforme'
-      case 'technicalVisit':
+      case 'technicalVisits':
         return 'Informe visita tècnica'
       case 'report':
         return 'Report'
       case 'offer':
         return "Proposta d'oferta final"
+      case 'offer_accepted':
+        return "Oferta acceptada"
       case 'constructionPermit':
         return "Permís d'obra"
       case 'installation':
@@ -202,7 +206,7 @@ const SomSolet = (props) => {
         return 'Registre Legal'
       case 'legalization':
         return 'Legalització'
-      case 'invoice':
+      case 'invoices':
         return 'Factura'
       case 'signature':
         return 'Signatura Contracte Clau en mà'

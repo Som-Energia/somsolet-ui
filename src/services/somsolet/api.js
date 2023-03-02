@@ -1,12 +1,13 @@
 import axios from 'axios'
 
-const { API_SOMSOLET_URL, SOMSOLET_API_USERNAME, SOMSOLET_API_PASSWORD } =
-  window.config
+// const { API_SOMSOLET_URL, SOMSOLET_API_USERNAME, SOMSOLET_API_PASSWORD } =
+const API_SOMSOLET_URL = 'https://somsolet-demo.somenergia.lan/somsolet-api/'
 
-const token = Buffer.from(
-  `${SOMSOLET_API_USERNAME}:${SOMSOLET_API_PASSWORD}`,
-  'utf8'
-).toString('base64')
+const getToken = () => {
+  return ""
+}
+
+const token = getToken()
 
 export const getReport = async (data) => {
   return axios({
@@ -23,7 +24,7 @@ export const getStages = async (data) => {
     method: 'GET',
     url: `${API_SOMSOLET_URL}stages/`,
     headers: {
-      Authorization: `Basic ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
     return response?.data
@@ -35,7 +36,7 @@ export const getCampaign = async (data) => {
     method: 'GET',
     url: `${API_SOMSOLET_URL}campaign/`,
     headers: {
-      Authorization: `Basic ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
     return response?.data
@@ -47,7 +48,7 @@ export const getProject = async (data) => {
     method: 'GET',
     url: `${API_SOMSOLET_URL}project/`,
     headers: {
-      Authorization: `Basic ${token}`,
+      Authorization: `Bearer ${token}`,
       dni: data.dni,
     },
   }).then((response) => {
@@ -60,7 +61,7 @@ export const sendContact = async (data) => {
     method: 'POST',
     url: `${API_SOMSOLET_URL}contact/`,
     headers: {
-      Authorization: `Basic ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
     return response
@@ -72,7 +73,7 @@ export const sendIncidence = async (data) => {
     method: 'POST',
     url: `${API_SOMSOLET_URL}incidence/`,
     headers: {
-      Authorization: `Basic ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
     return response
