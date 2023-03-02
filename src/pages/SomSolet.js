@@ -173,7 +173,7 @@ const SomSolet = (props) => {
     switch (key) {
       case 'supplyPoint':
         return <SupplyPoint supplyPointInfo={value} />
-      case 'projectId':
+      case 'project':
         return <Project projectInfo={value} />
       case 'registeredPerson':
         return <RegisteredPerson registeredPersonInfo={value} />
@@ -377,10 +377,9 @@ const SomSolet = (props) => {
                         )}
                       >
                         {project.map(({ title, content }, index) => (
-                          <div key={index}>
-                            <b key={index}>{title}</b>
+                          <Grid key={index} item sm={4} xs={12}>
                             <div key={index}>{content}</div>
-                          </div>
+                          </Grid>
                         ))}
                       </div>
                     )}

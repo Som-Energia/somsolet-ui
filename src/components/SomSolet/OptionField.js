@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
   label: {
     fontWeight: 500,
     fontSize: '0.9rem',
-    color: 'rgba(89, 89, 88, 0.9)',
+    color: 'black',
   },
+  optionField: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
 }))
