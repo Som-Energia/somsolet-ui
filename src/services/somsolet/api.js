@@ -1,13 +1,24 @@
 import axios from 'axios'
 
-// const { API_SOMSOLET_URL, SOMSOLET_API_USERNAME, SOMSOLET_API_PASSWORD } =
-const API_SOMSOLET_URL = 'https://somsolet-demo.somenergia.lan/somsolet-api/'
+const {
+  REACT_APP_API_SOMSOLET_URL,
+  REACT_APP_SOMSOLET_API_USERNAME,
+  REACT_APP_SOMSOLET_API_PASSWORD,
+} = process.env
 
-const getToken = () => {
-  return ""
+const getToken = async () => {
+  return axios({
+    method: 'POST',
+    url: `${REACT_APP_API_SOMSOLET_URL}api/token/`,
+    data: {
+      username: REACT_APP_SOMSOLET_API_USERNAME,
+      password: REACT_APP_SOMSOLET_API_PASSWORD,
+    },
+  }).then((response) => {
+    console.log('RESPONSE TOKEN:', response?.data?.access)
+    return response?.data?.access
+  })
 }
-
-const token = getToken()
 
 export const getReport = async (data) => {
   return axios({
@@ -20,9 +31,10 @@ export const getReport = async (data) => {
 }
 
 export const getStages = async (data) => {
+  const token = await getToken()
   return axios({
     method: 'GET',
-    url: `${API_SOMSOLET_URL}stages/`,
+    url: `${REACT_APP_API_SOMSOLET_URL}stages/`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -32,9 +44,10 @@ export const getStages = async (data) => {
 }
 
 export const getCampaign = async (data) => {
+  const token = await getToken()
   return axios({
     method: 'GET',
-    url: `${API_SOMSOLET_URL}campaign/`,
+    url: `${REACT_APP_API_SOMSOLET_URL}campaign/`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -44,9 +57,10 @@ export const getCampaign = async (data) => {
 }
 
 export const getProject = async (data) => {
+  const token = await getToken()
   return axios({
     method: 'GET',
-    url: `${API_SOMSOLET_URL}project/`,
+    url: `${REACT_APP_API_SOMSOLET_URL}project/`,
     headers: {
       Authorization: `Bearer ${token}`,
       dni: data.dni,
@@ -57,9 +71,10 @@ export const getProject = async (data) => {
 }
 
 export const sendContact = async (data) => {
+  const token = await getToken()
   return axios({
     method: 'POST',
-    url: `${API_SOMSOLET_URL}contact/`,
+    url: `${REACT_APP_API_SOMSOLET_URL}contact/`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -69,9 +84,10 @@ export const sendContact = async (data) => {
 }
 
 export const sendIncidence = async (data) => {
+  const token = await getToken()
   return axios({
     method: 'POST',
-    url: `${API_SOMSOLET_URL}incidence/`,
+    url: `${REACT_APP_API_SOMSOLET_URL}incidence/`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
