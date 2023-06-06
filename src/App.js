@@ -17,6 +17,21 @@ const App = (props) => {
     return <PVAutoSize {...props} />
   }
 
+  const loadCampaignDetail = () => {
+    const CampaignDetails = lazy(() => import('./pages/SomSolet/CampaignDetails'))
+    return <CampaignDetails {...props} />
+  }
+
+  const loadCampaignDetailNew = () => {
+    const CampaignDetailsNew = lazy(() => import('./pages/SomSolet/CampaignDetail-new'))
+    return <CampaignDetailsNew {...props} />
+  }
+
+  const loadCampaigns = () => {
+    const CampaignsPage = lazy(() => import('./pages/SomSolet/Campaigns'))
+    return <CampaignsPage {...props} />
+  }
+
   return (
     <>
       <Suspense fallback={<Loading />}>
@@ -29,6 +44,9 @@ const App = (props) => {
               render={loadSomSolet}
             />
             <Route path="/:language/pvautosize" render={loadPVAutoSize} />
+            <Route path="/campaign-detail/:id" render={loadCampaignDetail} />
+            <Route path="/campaigns/" render={loadCampaigns} />
+            <Route path="/campaign-detail-new" render={loadCampaignDetailNew} />
           </Switch>
         </Router>
       </Suspense>
